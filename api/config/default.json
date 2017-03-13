@@ -15,5 +15,5 @@
     "path": "/authentication",
     "service": "users"
   },
-  "nedb": ""
+  "nedb": "data"
 }
