@@ -1,9 +1,9 @@
 <template>
-  
+
     <home-layout>
       <section slot="content" class="section">
         <div class="container">
-          <h3>contentn</h3>
+          <h3>Content</h3>
         </div>
       </section>
     </home-layout>

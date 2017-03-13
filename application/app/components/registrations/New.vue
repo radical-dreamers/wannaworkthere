@@ -2,7 +2,15 @@
   <default-layout>
     <section slot="content" class="section" >
       <div class="container">
-        <h1 class="title">Dejanos tus datos y te llamamos</h1>
+        <h1 class="title">Buscamos gente como vos!</h1>
+        <h2 class="subtitle">Si te interesa el desarrollo y testing de software,
+          y querés tener la oportunidad de trabajar con
+          nosotros, llená el formulario a continuación</h2>
+        <br>
+        <div class="notification is-info">
+          Además de contactarte por oportunidades laborales, vamos a estar informándote
+          de eventos que organizemos en tu ciudad
+        </div>
         <form class="" @submit.prevent.stop="register" novalidate>
           <div class="control">
             <label for="name" class="label">Nombre</label>
@@ -29,9 +37,28 @@
             </p>
           </div>
           <div class="control">
-            <label for="coursingYear" class="label">Ano/Semestre en curso</label>
+            <label for="coursingYear" class="label">Año/Semestre en curso</label>
             <p class="control">
               <input type="text" name="coursingYear" class="input" placeholder="Segundo ano" v-model="person.coursingYear">
+            </p>
+          </div>
+          <div class="control">
+            <label for="city" class="label">Ciudad</label>
+            <p class="control">
+              input type="text" name="city" class="input" placeholder="Salto" v-model="person.city"
+            </p>
+          </div>
+          <div class="control">
+            <label for="remote" class="label">Queres trabajar desde tu ciudad?</label>
+            <p class="control">
+              <label class="radio">
+                <input type="radio" name="remote" value="Si" v-model="person.remote">
+                Si
+              </label>
+              <label class="radio">
+                <input type="radio" name="remote" value="No" v-model="person.remote">
+                No
+              </label>
             </p>
           </div>
           <div class="control">
@@ -59,19 +86,7 @@
               </span>
             </p>
           </div>
-          <div class="control">
-            <label for="remote" class="label">Queres trabajar desde tu ciudad?</label>
-            <p class="control">
-              <label class="radio">
-                <input type="radio" name="remote" value="Si" v-model="person.remote">
-                Si
-              </label>
-              <label class="radio">
-                <input type="radio" name="remote" value="No" v-model="person.remote">
-                No
-              </label>
-            </p>
-          </div>
+
           <div class="control">
             <label for="languages" class="label">Que lenguaje/framework te resulta familiar?</label>
             <p class="control">
@@ -109,7 +124,8 @@ export default {
         coursingYear: null,
         englishLevel: '',
         interest: '',
-        remote: 'Si'
+        remote: 'Si',
+        city: ''
       }
     }
   },
