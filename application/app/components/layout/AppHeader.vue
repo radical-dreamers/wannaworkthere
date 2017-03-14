@@ -2,10 +2,9 @@
   <nav class="nav has-shadow">
       <div class="container">
         <div class="nav-left">
-          <a class="nav-item title is-3">
-            <!--img src="/img/altimetrik-logo.png" alt="Logo"-->
+          <router-link class="nav-item title is-3" :to="{ name: 'hello' }">
             ALTIMETRIK
-          </a>
+          </router-link>
         </div>
         <span class="nav-toggle"  @click="toggleMenu">
           <span></span>

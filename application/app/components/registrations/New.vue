@@ -39,7 +39,7 @@
           <div class="control">
             <label for="coursingYear" class="label">Año/Semestre en curso</label>
             <p class="control">
-              <input type="text" name="coursingYear" class="input" placeholder="Segundo ano" v-model="person.coursingYear">
+              <input type="text" name="coursingYear" class="input" placeholder="Segundo año" v-model="person.coursingYear">
             </p>
           </div>
           <div class="control">
