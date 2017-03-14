@@ -6,12 +6,26 @@
     <!-- Hero content: will be in the middle -->
     <div class="hero-body">
       <div class="container has-text-centered">
-        <h1 class="title">
-          Queres trabajar con nosotros?
+        <h1 class="title is-1">
+          ¿Querés trabajar con nosotros?
         </h1>
-        <h2 class="subtitle">
-          En Altimetrik necesitamos gente como vos y queremos ponernos en contacto!
+        <h2 class="subtitle is-3">
+          ¡En Altimetrik necesitamos gente como vos y queremos ponernos en contacto!
         </h2>
+        <div class="columns">
+          <div class="column is-half is-offset-one-quarter">
+            <div class="level">
+              <div class="level-item">
+                <router-link :to="{ name: 'registrationsNew' }" class="button is-primary is-large">Anotate</router-link>
+              </div>
+              <div class="level-item">
+                  <router-link :to="{ name: 'about' }" class="button is-info is-large">Conocenos</router-link>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
       </div>
     </div>
   </section>

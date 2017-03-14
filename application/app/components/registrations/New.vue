@@ -9,7 +9,7 @@
         <br>
         <div class="notification is-info">
           Además de contactarte por oportunidades laborales, vamos a estar informándote
-          de eventos que organizemos en tu ciudad
+          de eventos que organicemos en tu ciudad
         </div>
         <form class="" @submit.prevent.stop="register" novalidate>
           <div class="control">

@@ -31,11 +31,15 @@ module.exports = {
           'node_modules/bulma'
         ]
       }
+    },
+    copycat: {
+      'fonts': ['node_modules/font-awesome/fonts']
     }
   },
   npm: {
     styles: {
-      'izitoast': ['dist/css/iziToast.css']
+      'izitoast': ['dist/css/iziToast.css'],
+      'font-awesome': ['css/font-awesome.css']
     }
   }
 }
