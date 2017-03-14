@@ -45,7 +45,7 @@
           <div class="control">
             <label for="city" class="label">Ciudad</label>
             <p class="control">
-              input type="text" name="city" class="input" placeholder="Salto" v-model="person.city"
+              <input type="text" name="city" class="input" placeholder="Salto" v-model="person.city" />
             </p>
           </div>
           <div class="control">
