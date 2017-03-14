@@ -12,7 +12,9 @@ Vue.use(Router)
 const router = new Router({
   routes,
   mode: 'history',
-  saveScrollPosition: true,
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  },
   linkActiveClass: 'is-active'
 })
 
