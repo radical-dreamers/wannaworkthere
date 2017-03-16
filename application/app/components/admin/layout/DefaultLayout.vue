@@ -1,13 +1,34 @@
 <template lang="html">
   <div class="">
-    <h1 class="title is-1">Welcome Admin!</h1>
-    <slot name="content"></slot>
+    <top-header></top-header>
+    <div class="container is-fluid">
+      <div class="columns is-mobile">
+        <div class="column is-2-tablet is-3-mobile">
+          <div class="container">
+            <side-menu></side-menu>
+          </div>
+
+        </div>
+        <div class="column">
+            <slot name="content"></slot>
+        </div>
+      </div>
+    </div>
+
   </div>
+
 </template>
 
 <script>
+import SideMenu from './partials/side-menu.vue'
+import TopHeader from './partials/top-header.vue'
+
 export default {
-  name: 'DefaultLayout'
+  name: 'DefaultLayout',
+  components: {
+    'side-menu': SideMenu,
+    'top-header': TopHeader
+  }
 }
 </script>
 

@@ -1,7 +1,5 @@
 <template lang="html">
-  <div class="">
-    <h1>Create new user</h1>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>

@@ -108,6 +108,7 @@ export default {
           password: this.password,
           rememberMe: this.rememberMe
         }).then((result) => {
+          console.log('### login result ', result)
           this.addMessage({
             text: 'Bienvenido/a ' + result.data.user.firstName,
             type: 'success'
@@ -115,6 +116,7 @@ export default {
           if (this.$route.query.next) {
             this.$router.push(this.$route.query.next)
           } else {
+            console.log('going to admin.home state')
             this.$router.push({name: 'admin.home'})
           }
         }).catch((error) => {
