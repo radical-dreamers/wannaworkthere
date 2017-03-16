@@ -1,7 +1,0 @@
-{
-  "host": "localhost",
-  "port": "9513",
-  "registeredDomains": [
-    "*@altimetrik.com"
-  ]
-}
