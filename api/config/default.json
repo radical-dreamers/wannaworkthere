@@ -15,5 +15,8 @@
     "path": "/authentication",
     "service": "users"
   },
-  "nedb": "data"
+  "nedb": "data",
+  "registeredDomains": [
+    "*"
+  ]
 }

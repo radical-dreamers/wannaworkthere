@@ -3,6 +3,7 @@
 const { authenticate } = require('feathers-authentication').hooks;
 const { unless, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const { hashPassword } = require('feathers-authentication-local').hooks;
+const restrictToDomain = require('./hooks/restrict-to-domain');
 
 module.exports = {
   before: {
@@ -15,9 +16,9 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [ setCreatedAt('createdAt'), setUpdatedAt('updatedAt'), hashPassword() ],
-    update: [ setUpdatedAt('updatedAt') ],
-    patch: [ setUpdatedAt('updatedAt') ],
+    create: [ restrictToDomain(), setCreatedAt('createdAt'), setUpdatedAt('updatedAt'), hashPassword() ],
+    update: [ restrictToDomain(), setUpdatedAt('updatedAt') ],
+    patch: [ restrictToDomain(), setUpdatedAt('updatedAt') ],
     remove: []
   },
 

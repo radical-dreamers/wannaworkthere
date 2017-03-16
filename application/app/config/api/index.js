@@ -9,7 +9,7 @@ import axios from 'axios'
 // this is a temporary server address, until we have a way to configure it
 // properly using settings.
 let env = $PROCESS_ENV_PRODUCTION
-let host = env ? 'quierotrabajarenaltimetrik.com/api' : 'http://localhost:3030/api'
+let host = env ? 'quierotrabajarenaltimetrik.com/api' : 'http://localhost:3030/'
 
 let remoteApp = axios.create({
   baseURL: host,

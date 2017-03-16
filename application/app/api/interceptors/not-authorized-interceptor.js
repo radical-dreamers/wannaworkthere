@@ -7,8 +7,8 @@
 export default function (error) {
   let router = window.app.$root.$router
   let route = window.app.$root.$route
-  if (error.response.status == 401 && route.name != 'login') {
-    window.app.$root.$router.push({name: 'login', query: {
+  if (error.response.status == 401 && route.name != 'admin.login') {
+    window.app.$root.$router.push({name: 'admin.login', query: {
       next: window.app.$root.$route.fullPath
     }})
   }

@@ -1,4 +1,5 @@
 import store from '../../vuex-store'
+import config from '../index'
 
 module.exports = {
   /**
@@ -11,8 +12,13 @@ module.exports = {
    */
    loginRequired: function (to, from, next) {
      if (to.meta.loginRequired && !store.getters.isLoggedIn) {
-       next({name: 'login'})
+       console.log('login required hook')
+       next({name: 'admin.login'})
      }
      next()
+   },
+
+   changeTitle: function (to, from, next) {
+     document.title = (to.meta.title ? to.meta.title + ' - ' : '') + config.appTitle 
    }
 }

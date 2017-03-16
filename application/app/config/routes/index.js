@@ -7,6 +7,7 @@ import error from '../../components/error.vue'
 import hello from '../../components/Hello.vue'
 import registrations from '../../components/registrations/routes'
 import about from '../../components/about/routes'
+import adminRoutes from '../../components/admin/routes'
 
 let routes = [
   {
@@ -16,6 +17,7 @@ let routes = [
   },
   ...registrations,
   ...about,
+  ...adminRoutes,
   {
     path: '/',
     redirect: '/home'

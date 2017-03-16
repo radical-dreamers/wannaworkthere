@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import 'vueify/lib/insert-css'
+import VeeValidate from 'vee-validate'
 
 import routes from './config/routes'
 import routerHooks from './config/routes/hooks'
@@ -8,6 +9,8 @@ import App from './App'
 import store from './vuex-store'
 
 Vue.use(Router)
+// setup vee-validate
+Vue.use(VeeValidate)
 
 const router = new Router({
   routes,
@@ -20,6 +23,7 @@ const router = new Router({
 
 // Add the loginRequired hook before each state transition
 router.beforeEach(routerHooks.loginRequired)
+router.afterEach(routerHooks.changeTitle)
 
 /* eslint-disable no-new */
 const app = new Vue({
@@ -29,3 +33,5 @@ const app = new Vue({
 })
 
 app.$mount('#app')
+
+window.app = app
