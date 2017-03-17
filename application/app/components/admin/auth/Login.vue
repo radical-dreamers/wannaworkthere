@@ -101,25 +101,33 @@ export default {
      * @returns {undefined} this method does not return
      */
     doLogin: function (event) {
+      // validate all fileds are correct
       this.$validator.validateAll().then(success => {
-
+        // log the user in with api and store the data if needed
         this.login({
           email: this.email,
           password: this.password,
           rememberMe: this.rememberMe
         }).then((result) => {
-          console.log('### login result ', result)
+          // Everything worked fine, show a message
           this.addMessage({
             text: 'Bienvenido/a ' + result.data.user.firstName,
             type: 'success'
           })
+          // redirect to the next page (if available through params) or admin
+          // panel's home
           if (this.$route.query.next) {
             this.$router.push(this.$route.query.next)
           } else {
-            console.log('going to admin.home state')
             this.$router.push({name: 'admin.home'})
           }
         }).catch((error) => {
+        })
+      }).catch((error) => {
+        // there was a validation error
+        this.addMessage({
+          text: 'Debes corregir los errores en el formulario',
+          type: 'error'
         })
       })
 

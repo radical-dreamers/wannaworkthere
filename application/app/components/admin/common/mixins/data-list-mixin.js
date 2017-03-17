@@ -1,10 +1,16 @@
 export default {
   computed: {
     hasNext () {
-      return this.skip + this.limit < total
+      return this.skip + this.limit < this.total
     },
     hasPrevious () {
       return this.skip - this.limit >= 0
+    },
+    minRecord () {
+      return this.skip + 1
+    },
+    maxRecord () {
+      return this.skip + this.items.length
     }
   },
   methods: {

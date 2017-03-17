@@ -1,7 +1,7 @@
 {
-  "name": "brunch-with-vuety",
+  "name": "wannaworkthere",
   "version": "1.0.1",
-  "description": "An opinionated Brunch Skeleton using Vue, Vuex and VueRouter along with axios for client-server communication and an example api structure ",
+  "description": "UI for the wannaworkthere package",
   "main": "public/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/srodriki/production-manager.git"
+    "url": "git+https://gitlab.com/srodriki/wannaworkthere.git"
   },
   "keywords": [
     "vue",
@@ -22,9 +22,9 @@
   "author": "Rodrigo Juliani <srodriki@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/srodriki/production-manager/issues"
+    "url": "https://gitlab.com/srodriki/wannaworkthere/issues"
   },
-  "homepage": "https://gitlab.com/srodriki/production-manager#README",
+  "homepage": "https://gitlab.com/srodriki/wannaworkthere#README",
   "devDependencies": {
     "babel-brunch": "^6.0.6",
     "babel-plugin-transform-runtime": "^6.22.0",

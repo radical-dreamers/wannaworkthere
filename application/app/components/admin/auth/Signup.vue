@@ -137,6 +137,12 @@ export default {
           })
           this.$router.push({name: 'admin.login'})
         }).catch((error) => { /* Do nothing. errors are handled globally */})
+      }).catch((error) => {
+        // there was a validation error
+        this.addMessage({
+          text: 'Debes corregir los errores en el formulario',
+          type: 'error'
+        })
       })
     }
   }
