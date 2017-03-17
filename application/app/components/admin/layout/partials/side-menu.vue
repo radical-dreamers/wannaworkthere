@@ -10,7 +10,7 @@
     </ul>
     <p class="menu-label">Registros</p>
     <ul class="menu-list">
-      <li><a href="#"><span class="icon"><i class="fa fa-id-card"></i></span>&nbsp;Registros</a></li>
+      <li><router-link :to="{ name: 'admin.registrations' }"><span class="icon"><i class="fa fa-id-card"></i></span>&nbsp;Registros</router-link></li>
     </ul>
     <ul>
 

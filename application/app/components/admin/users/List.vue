@@ -9,7 +9,7 @@
 <script>
 import api from '../../../api'
 import UserListItem from './user-list-item.vue'
-import TiledList from '../layout/lists/tiled-list.vue'
+import TiledList from '../common/lists/tiled-list.vue'
 import DataListMixin from '../common/mixins/data-list-mixin'
 
 export default {
