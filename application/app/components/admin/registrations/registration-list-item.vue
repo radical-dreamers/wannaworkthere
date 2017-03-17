@@ -4,7 +4,7 @@
       <div class="content">
         <p class="title is-4">
           <router-link :to="{ name: 'admin.registrations.detail', params: { id: item._id}}">
-            {{ item.name }}
+            {{ item.name || '[Sin nombre]' }}
           </router-link>
         </p>
         <p class="subtitle is-6">{{ item.email }}</p>
