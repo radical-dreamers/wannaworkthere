@@ -2,7 +2,7 @@
   <div class="">
     <h1 class="title is-2" v-if="title">{{ title }}</h1>
 
-    <div class="tile is-parent is-multiline">
+    <div class="columns is-multiline is-narrow">
       <slot name="items"></slot>
     </div>
   </div>

@@ -1,14 +1,17 @@
 <template lang="html">
-  <tiled-list title="Registros">
-    <div slot="items" class="tile is-parent is-child is-4" v-for="item in items">
+  
+  <column-list title="Registros">
+    <div slot="items" class="column is-4" v-for="item in items">
       <registration-list-item :item="item"></registration-list-item>
     </div>
-  </tiled-list>
+  </column-list>
+
+
 </template>
 
 <script>
 import api from '../../../api'
-import TiledList from '../common/lists/tiled-list.vue'
+import ColumnList from '../common/lists/column-list.vue'
 import DataListMixin from '../common/mixins/data-list-mixin'
 import RegistrationListItem from './registration-list-item.vue'
 
@@ -25,7 +28,7 @@ export default {
     }
   },
   components: {
-    'tiled-list': TiledList,
+    'column-list': ColumnList,
     'registration-list-item': RegistrationListItem
   }
 }
