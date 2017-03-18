@@ -31,7 +31,7 @@ export default {
       items: [],
       skip: 0,
       total: 0,
-      limit: 2,
+      limit: 15,
       dataSource: api.registrations
     }
   },
