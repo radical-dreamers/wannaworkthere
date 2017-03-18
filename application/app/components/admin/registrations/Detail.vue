@@ -1,11 +1,33 @@
 <template lang="html">
   <div class="section">
-    <h1 class="title is-3">{{ item.name }}</h1>
-    <h2 class="subtitle is-5 is-">Detalles del registro</h2>
+    <div class="columns">
+      <div class="column">
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <h1 class="title is-3">{{ item.name }}</h1>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item" title="Fecha de Registro">
+              <h2 class="subtitle is-5"><strong><i class="fa fa-calendar"></i></strong> {{ createdAt}}</h2>
+            </div>
+          </div>
+        </div>
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="subtitle is-5 is-">Detalles del registro</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <hr/>
     <div class="content">
       <h1 class="title is-4">Datos personales</h1>
-      <div class="columns">
+      <div class="columns is-multiline">
         <div class="column is-4">
           <div class="field">
             <label class="label">Nombre</label>
@@ -30,9 +52,6 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="columns">
         <div class="column is-4">
           <div class="field">
             <label class="label">Ciudad</label>
@@ -42,19 +61,20 @@
           </div>
         </div>
         <div class="column is-4">
-          <div class="field column is-4">
+          <div class="field">
             <label class="label">Desde su ciudad?</label>
-            <div class="is-medium has-text-centered">
-              <span class="tag" v-bind:class="{'is-success': item.remote == 'Si', 'is-danger': item.remote == 'No'}">{{ item.remote }}</span>
+            <div class="has-text-centered">
+              <span class="tag is-medium" v-bind:class="{'is-success': item.remote == 'Si', 'is-danger': item.remote == 'No'}">{{ item.remote }}</span>
             </div>
           </div>
         </div>
       </div>
+
     </div>
     <hr/>
     <div class="content">
-      <h1 class="title is-4">Educacion</h1>
-      <div class="columns">
+      <h1 class="title is-4">Educación</h1>
+      <div class="columns is-multiline">
         <div class="column is-4">
           <div class="field">
             <label class="label">Universidad</label>
@@ -112,6 +132,7 @@
 <script>
 import RegistrationInstanceMixin from './registration-instance-mixin'
 import api from '../../../api'
+import moment from 'moment'
 
 export default {
   props: {
@@ -132,6 +153,11 @@ export default {
     api.registrations.get(this.id).then((result) => {
       this.item = result.data
     }).catch((error) => { /* Do nothing. errors are handled globally */})
+  },
+  computed: {
+    createdAt () {
+      return moment(this.item.createdAt).format('DD/MM/YYYY hh:mm')
+    }
   }
 }
 </script>

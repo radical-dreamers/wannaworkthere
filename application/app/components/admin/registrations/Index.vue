@@ -1,10 +1,16 @@
 <template lang="html">
-  <router-view></router-view>
+  <fade-in-transition>
+    <router-view></router-view>
+  </fade-in-transition>
 </template>
 
 <script>
+import fadeInTransition from '../common/transitions/fade-in-transition'
 export default {
-  name: 'registrations'
+  name: 'registrations',
+  components: {
+    'fade-in-transition': fadeInTransition
+  }
 }
 </script>
 

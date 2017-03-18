@@ -39,7 +39,8 @@ module.exports = {
   npm: {
     styles: {
       'izitoast': ['dist/css/iziToast.css'],
-      'font-awesome': ['css/font-awesome.css']
+      'font-awesome': ['css/font-awesome.css'],
+      'animate.css': ['animate.css']
     }
   }
 }

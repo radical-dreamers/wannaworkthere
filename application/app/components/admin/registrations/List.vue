@@ -6,9 +6,11 @@
       <br/>
     </div>
     <br/>
+
     <div slot="items" class="column is-4" v-for="item in items">
-      <registration-list-item :item="item"></registration-list-item>
+        <registration-list-item :item="item"></registration-list-item>
     </div>
+
   </column-list>
 
 
@@ -29,7 +31,7 @@ export default {
       items: [],
       skip: 0,
       total: 0,
-      limit: 15,
+      limit: 2,
       dataSource: api.registrations
     }
   },

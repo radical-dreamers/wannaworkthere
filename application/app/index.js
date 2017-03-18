@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import Vue from 'vue'
 import Router from 'vue-router'
 import 'vueify/lib/insert-css'
@@ -7,6 +9,7 @@ import routes from './config/routes'
 import routerHooks from './config/routes/hooks'
 import App from './App'
 import store from './vuex-store'
+
 
 Vue.use(Router)
 // setup vee-validate

@@ -1,19 +1,15 @@
 <template>
-  <router-view></router-view>
-  <!--div class="">
-    <app-header></app-header>
-    <div class="container is-fluid">
-
-    </div>
-    <app-footer></app-footer>
-  </div-->
-
-
+  <fade-in-transition>
+    <router-view></router-view>
+  </fade-in-transition>
 </template>
 
 <script>
-
+import fadeInTransition from './components/admin/common/transitions/fade-in-transition'
 export default {
+  components: {
+    'fade-in-transition': fadeInTransition
+  }
 }
 </script>
 
