@@ -1,7 +1,7 @@
 <template>
-  <fade-in-transition>
+  <animated-fade-in>
     <router-view></router-view>
-  </fade-in-transition>
+  </animated-fade-in>
 </template>
 
 <script>

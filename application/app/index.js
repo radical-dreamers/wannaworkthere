@@ -4,6 +4,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import 'vueify/lib/insert-css'
 import VeeValidate from 'vee-validate'
+import AnimatedVue from 'animated-vue'
 
 import routes from './config/routes'
 import routerHooks from './config/routes/hooks'
@@ -14,6 +15,7 @@ import store from './vuex-store'
 Vue.use(Router)
 // setup vee-validate
 Vue.use(VeeValidate)
+Vue.use(AnimatedVue)
 
 const router = new Router({
   routes,
