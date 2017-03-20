@@ -21,7 +21,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import layout from './layout'
-import fadeInTransition from './common/transitions/fade-in-transition'
+import fadeInTransition from '../common/transitions/fade-in-transition'
 
 export default {
   name: 'AdminMain',

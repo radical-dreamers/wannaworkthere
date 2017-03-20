@@ -1,11 +1,11 @@
 <template>
-  <animated-fade-in>
+  <fade-in-transition>
     <router-view></router-view>
-  </animated-fade-in>
+  </fade-in-transition>
 </template>
 
 <script>
-import fadeInTransition from './components/admin/common/transitions/fade-in-transition'
+import fadeInTransition from './components/common/transitions/fade-in-transition'
 export default {
   components: {
     'fade-in-transition': fadeInTransition

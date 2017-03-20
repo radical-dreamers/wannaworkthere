@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import fadeInTransition from '../common/transitions/fade-in-transition'
+import fadeInTransition from '../../common/transitions/fade-in-transition'
 export default {
   name: 'registrations',
   components: {

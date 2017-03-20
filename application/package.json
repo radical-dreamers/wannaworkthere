@@ -40,7 +40,6 @@
   },
   "dependencies": {
     "animate.css": "^3.5.2",
-    "animated-vue": "^0.1.2",
     "axios": "^0.15.3",
     "bulma": "^0.3.2",
     "font-awesome": "^4.7.0",
