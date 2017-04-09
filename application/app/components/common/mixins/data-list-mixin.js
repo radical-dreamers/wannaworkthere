@@ -14,26 +14,36 @@ export default {
     }
   },
   methods: {
-    loadItems () {
-      this.dataSource.find({
+    loadItems (filters) {
+      let innerFilters = {
         $skip: this.skip,
         $limit: this.limit
-      }).then((result) => {
+      }
+      if(filters) {
+        Object.assign(innerFilters, filters)
+      }
+      this.dataSource.find(innerFilters).then((result) => {
         this.items = result.data.data
         this.total = result.data.total
         this.limit = result.data.limit
       }).catch((error) => { /* Do nothing. Errors are handled globally */})
     },
-    next () {
+    /**
+     * [next description]
+     * @param  {Object} filters An optional parameter containing all custom
+     * filters for a concrete data list.
+     * @return Function         [description]
+     */
+    next (filters) {
       if (this.hasNext) {
         this.skip += this.limit
-        this.loadItems()
+        this.loadItems(filters)
       }
     },
-    previous () {
+    previous (filters) {
       if (this.hasPrevious) {
         this.skip -= this.limit
-        this.loadItems()
+        this.loadItems(filters)
       }
     }
   },

@@ -5,6 +5,8 @@
  * Modify to suit your needs
  */
 import axios from 'axios'
+import qs from 'qs'
+
 
 // this is a temporary server address, until we have a way to configure it
 // properly using settings.
@@ -19,6 +21,8 @@ let remoteApp = axios.create({
   }
 })
 
-console.log(host)
+remoteApp.defaults.paramsSerializer = function (params) {
+  return qs.stringify(params)
+}
 
 export default remoteApp
