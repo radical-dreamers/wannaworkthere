@@ -1,6 +1,4 @@
-import auth from './auth'
 import registrations from './registrations'
-import users from './users'
 import interceptors from './interceptors'
 import api from '../config/api'
 

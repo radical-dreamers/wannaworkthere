@@ -24,8 +24,6 @@ const router = new Router({
   linkActiveClass: 'is-active'
 })
 
-// Add the loginRequired hook before each state transition
-router.beforeEach(routerHooks.loginRequired)
 router.afterEach(routerHooks.changeTitle)
 
 /* eslint-disable no-new */

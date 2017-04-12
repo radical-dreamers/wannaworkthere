@@ -5,7 +5,5 @@
  * this template uses Vuex to store the user's credentials
  */
 
-export const LOGIN = 'LOGIN'
-export const LOGOUT = 'LOGOUT'
 export const ADD_STATUS_MESSAGE = 'ADD_STATUS_MESSAGE'
 export const REMOVE_STATUS_MESSAGE = 'REMOVE_STATUS_MESSAGE'

@@ -1,4 +1,3 @@
-import auth from './modules/auth'
 import status from './modules/status'
 import Vuex from 'vuex'
 import Vue from 'vue'
