@@ -1,18 +1,23 @@
 'use strict';
 
 const { authenticate } = require('feathers-authentication').hooks;
-const { setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
+const { unless, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 const searchField = require('../../hooks/common/search-field');
 
 module.exports = {
   before: {
-    all: [],
-    find: [ authenticate('jwt'), searchField() ],
-    get: [ authenticate('jwt') ],
-    create: [ setCreatedAt('createdAt'), setUpdatedAt('updatedAt')],
-    update: [ authenticate('jwt'), setUpdatedAt('updatedAt')],
-    patch: [ authenticate('jwt'), setUpdatedAt('updatedAt') ],
-    remove: [ authenticate('jwt') ]
+    all: [ // call the authenticate hook before every method except 'create'
+      unless(
+        (hook) => hook.method === 'create',
+        authenticate('jwt')
+      )
+    ],
+    find: [searchField()],
+    get: [],
+    create: [setCreatedAt('createdAt'), setUpdatedAt('updatedAt')],
+    update: [setUpdatedAt('updatedAt')],
+    patch: [setUpdatedAt('updatedAt')],
+    remove: []
   },
 
   after: {

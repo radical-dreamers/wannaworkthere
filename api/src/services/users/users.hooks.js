@@ -1,29 +1,36 @@
 'use strict';
 
 const { authenticate } = require('feathers-authentication').hooks;
-const { unless, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
+const commonHooks = require('feathers-hooks-common');
+const { restrictToOwner } = require('feathers-authentication-hooks');
+
 const { hashPassword } = require('feathers-authentication-local').hooks;
-const restrictToDomain = require('./hooks/restrict-to-domain');
+const restrict = [
+  authenticate('jwt'),
+  restrictToOwner({
+    idField: '_id',
+    ownerField: '_id'
+  })
+];
 
 module.exports = {
   before: {
-    all: [
-      // call the authenticate hook before every method except 'create'
-      unless(
-        (hook) => hook.method === 'create',
-        authenticate('jwt')
-      )
-    ],
-    find: [],
-    get: [],
-    create: [ restrictToDomain(), setCreatedAt('createdAt'), setUpdatedAt('updatedAt'), hashPassword() ],
-    update: [ restrictToDomain(), setUpdatedAt('updatedAt') ],
-    patch: [ restrictToDomain(), setUpdatedAt('updatedAt') ],
-    remove: []
+    all: [],
+    find: [ authenticate('jwt') ],
+    get: [ ...restrict ],
+    create: [ hashPassword() ],
+    update: [ ...restrict, hashPassword() ],
+    patch: [ ...restrict, hashPassword() ],
+    remove: [ ...restrict ]
   },
 
   after: {
-    all: [],
+    all: [
+      commonHooks.when(
+        hook => hook.params.provider,
+        commonHooks.discard('password')
+      )
+    ],
     find: [],
     get: [],
     create: [],

@@ -6,7 +6,7 @@ const createModel = require('../../models/events.model');
 const hooks = require('./events.hooks');
 const filters = require('./events.filters');
 
-module.exports = function() {
+module.exports = function () {
   const app = this;
   const Model = createModel(app);
   const paginate = app.get('paginate');

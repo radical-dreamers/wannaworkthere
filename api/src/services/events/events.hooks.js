@@ -1,21 +1,15 @@
 'use strict';
 
 const { authenticate } = require('feathers-authentication').hooks;
-const { unless, setCreatedAt, setUpdatedAt } = require('feathers-hooks-common');
 
 module.exports = {
   before: {
-    all: [
-      unless(
-        (hook) => hook.method === 'find' || hook.method === 'get',
-        authenticate('jwt')
-      )
-    ],
+    all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [setCreatedAt('createdAt'), setUpdatedAt('updatedAt')],
-    update: [setUpdatedAt('updatedAt')],
-    patch: [setUpdatedAt('updatedAt')],
+    create: [],
+    update: [],
+    patch: [],
     remove: []
   },
 

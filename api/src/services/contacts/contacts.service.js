@@ -1,10 +1,10 @@
 'use strict';
 
-// Initializes the `users` service on path `/users`
+// Initializes the `contacts` service on path `/contacts`
 const createService = require('feathers-nedb');
-const createModel = require('../../models/users.model');
-const hooks = require('./users.hooks');
-const filters = require('./users.filters');
+const createModel = require('../../models/contacts.model');
+const hooks = require('./contacts.hooks');
+const filters = require('./contacts.filters');
 
 module.exports = function () {
   const app = this;
@@ -12,16 +12,16 @@ module.exports = function () {
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'users',
+    name: 'contacts',
     Model,
     paginate
   };
 
   // Initialize our service with any options it requires
-  app.use('/users', createService(options));
+  app.use('/contacts', createService(options));
 
   // Get our initialized service so that we can register hooks and filters
-  const service = app.service('users');
+  const service = app.service('contacts');
 
   service.hooks(hooks);
 
