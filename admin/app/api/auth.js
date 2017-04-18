@@ -11,10 +11,13 @@ let endpoints = {
 
 export default {
   login: (payload) => {
+    payload.strategy = 'local'
     let res = api.post(endpoints.login, payload)
     return res
   },
   logout: () => {
+    //let res = api.remove(endpoints.login)
     console.log('logout')
+
   }
 }

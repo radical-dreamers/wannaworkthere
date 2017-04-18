@@ -4,10 +4,7 @@
     <div class="container is-fluid">
       <div class="columns is-mobile">
         <div class="column is-2-tablet is-3-mobile">
-          <div class="container">
-            <side-menu></side-menu>
-          </div>
-
+          <side-menu></side-menu>
         </div>
         <div class="column">
             <slot name="content"></slot>

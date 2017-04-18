@@ -3,8 +3,7 @@ import homeRoutes from './home/routes'
 import authRoutes from './auth/routes'
 import usersRoutes from './users/routes'
 import registrationsRoutes from './registrations/routes'
-
-// TODO: import users, home and registrations routes
+import contactsRoutes from './contacts/routes'
 
 
 export default [
@@ -15,6 +14,7 @@ export default [
       ...authRoutes,
       ...usersRoutes,
       ...registrationsRoutes,
+      ...contactsRoutes,
       ...homeRoutes
     ]
   }

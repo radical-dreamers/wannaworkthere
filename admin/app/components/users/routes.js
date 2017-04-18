@@ -1,7 +1,6 @@
 import Index from './Index.vue'
 import Create from './Create.vue'
 import List from './List.vue'
-import Detail from './Detail.vue'
 
 export default [
   {
@@ -29,7 +28,7 @@ export default [
       },
       {
         name: 'admin.users.detail',
-        component: Detail,
+        component: Create,
         path: ':id',
         props: true,
         meta: {

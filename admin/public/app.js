@@ -196,13 +196,32 @@ var endpoints = {
 
 exports.default = {
   login: function login(payload) {
+    payload.strategy = 'local';
     var res = _api2.default.post(endpoints.login, payload);
     return res;
   },
   logout: function logout() {
+    //let res = api.remove(endpoints.login)
     console.log('logout');
   }
 };
+
+});
+
+require.register("api/contacts.js", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _crudApi = require('./crud-api');
+
+var _crudApi2 = _interopRequireDefault(_crudApi);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = new _crudApi2.default('registrations/');
 
 });
 
@@ -322,6 +341,10 @@ var _users = require('./users');
 
 var _users2 = _interopRequireDefault(_users);
 
+var _contacts = require('./contacts');
+
+var _contacts2 = _interopRequireDefault(_contacts);
+
 var _interceptors = require('./interceptors');
 
 var _interceptors2 = _interopRequireDefault(_interceptors);
@@ -345,7 +368,8 @@ _api2.default.interceptors.response.use(undefined, _interceptors2.default.ApiErr
 exports.default = {
   auth: _auth2.default,
   registrations: _registrations2.default,
-  users: _users2.default
+  users: _users2.default,
+  contacts: _contacts2.default
 };
 
 });
@@ -1032,7 +1056,71 @@ exports.default = {
 
 });
 
-require.register("components/common/lists/column-list.vue", function(exports, require, module) {
+require.register("components/common/forms/fields/index.js", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _vbField = require('./vb-field.vue');
+
+var _vbField2 = _interopRequireDefault(_vbField);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  vbField: _vbField2.default
+};
+
+});
+
+require.register("components/common/forms/fields/vb-field.vue", function(exports, require, module) {
+;(function(){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  props: {
+    leftIcon: {
+      type: String,
+      required: false
+    },
+    rightIcon: {
+      type: String,
+      required: false
+    },
+    label: {
+      type: String,
+      required: false
+    },
+    help: {
+      type: Object,
+      required: false
+    }
+  }
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"field"},[(_vm.label)?_c('label',{staticClass:"label"},[_vm._v(_vm._s(_vm.label))]):_vm._e(),_vm._v(" "),_c('p',{staticClass:"control",class:{'has-icons-left': _vm.leftIcon, 'has-icons-right': _vm.rightIcon}},[_vm._t("field"),_vm._v(" "),(_vm.leftIcon)?_c('span',{staticClass:"icon is-small is-left"},[_c('i',{staticClass:"fa",class:_vm.leftIcon})]):_vm._e(),_vm._v(" "),(_vm.rightIcon)?_c('span',{staticClass:"icon is-small is-right"},[_c('i',{staticClass:"fa",class:_vm.rightIcon})]):_vm._e()],2),_vm._v(" "),(_vm.help && _vm.help.show)?_c('p',{staticClass:"help",class:_vm.help.level},[_vm._v(_vm._s(_vm.help.message))]):_vm._e()])}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-52a04178", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-52a04178", __vue__options__)
+  }
+})()}
+});
+
+;require.register("components/common/lists/column-list.vue", function(exports, require, module) {
 ;(function(){
 "use strict";
 
@@ -1051,7 +1139,7 @@ exports.default = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{},[(_vm.title)?_c('h1',{staticClass:"title is-2"},[_vm._v(_vm._s(_vm.title))]):_vm._e(),_vm._v(" "),_vm._t("filters"),_vm._v(" "),_c('div',{staticClass:"columns is-multiline is-narrow"},[_vm._t("items")],2)],2)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"hero"},[(_vm.title)?_c('h1',{staticClass:"title is-2"},[_vm._v(_vm._s(_vm.title))]):_vm._e(),_vm._v(" "),_vm._t("filters"),_vm._v(" "),_c('div',{staticClass:"columns is-multiline is-narrow"},[_vm._t("items")],2)],2)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -1292,6 +1380,345 @@ exports.default = GenericTransition;
 
 });
 
+require.register("components/contacts/Create.vue", function(exports, require, module) {
+;(function(){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _fields = require('../common/forms/fields');
+
+var _fields2 = _interopRequireDefault(_fields);
+
+var _api = require('../../api');
+
+var _api2 = _interopRequireDefault(_api);
+
+var _vuex = require('vuex');
+
+var _countriesList = require('countries-list');
+
+var _countriesList2 = _interopRequireDefault(_countriesList);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  props: {
+    id: {
+      required: false,
+      type: String
+    }
+  },
+  components: {
+    'vb-field': _fields2.default.vbField
+  },
+  data: function data() {
+    return {
+      instance: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        age: '',
+        city: '',
+        country: ''
+      },
+      countries: _countriesList2.default.countries
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    if (this.id) {
+      _api2.default.contacts.get(this.id).then(function (result) {
+        _this.instance = result.data;
+      }).catch(function (error) {});
+    }
+  },
+
+  methods: _extends({}, (0, _vuex.mapActions)(['addMessage']), {
+    save: function save() {
+      var _this2 = this;
+
+      this.$validator.validateAll().then(function (success) {
+        if (_this2.instance._id) {
+          _this2.update();
+        } else {
+          _this2.create();
+        }
+      }).catch(function (error) {});
+    },
+    create: function create() {
+      var _this3 = this;
+
+      _api2.default.contacts.create(this.instance).then(function (result) {
+        _this3.addMessage({
+          text: 'Contact created successfully',
+          type: 'success'
+        });
+        _this3.$router.push({ name: 'admin.contacts' });
+      }).catch(function (error) {});
+    },
+    update: function update() {
+      var _this4 = this;
+
+      _api2.default.contacts.update(this.instance._id, this.instance).then(function (result) {
+        _this4.addMessage({
+          text: 'Contact updated successfully',
+          type: 'success'
+        });
+        _this4.$router.push({ name: 'admin.contacts' });
+      }).catch(function (error) {});
+    },
+    cancel: function cancel() {
+      this.$router.push({ name: 'admin.contacts' });
+    }
+  })
+
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"hero"},[_c('h1',{staticClass:"title is-2"},[_vm._v(_vm._s(_vm.$t('contacts.create.title' )))]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();$event.stopPropagation();_vm.save($event)}}},[_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('contacts.common.firstName'),"help":{show: _vm.errors.has('firstName'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.firstName),expression:"instance.firstName"},{name:"validate",rawName:"v-validate:firstName.initial",value:('required'),expression:"'required'",arg:"firstName",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('firstName')},attrs:{"type":"text","name":"firstName","placeholder":"John"},domProps:{"value":(_vm.instance.firstName)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.firstName=$event.target.value}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('contacts.common.lastName'),"help":{show: _vm.errors.has('lastName'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.lastName),expression:"instance.lastName"},{name:"validate",rawName:"v-validate:lastName.initial",value:('required'),expression:"'required'",arg:"lastName",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('lastName')},attrs:{"type":"text","placeholder":"Snow","name":"lastName"},domProps:{"value":(_vm.instance.lastName)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.lastName=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('contacts.common.email'),"help":{show: _vm.errors.has('email'), message: _vm.$t('fields.invalidEmail'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.email),expression:"instance.email"},{name:"validate",rawName:"v-validate:email.initial",value:('required|email'),expression:"'required|email'",arg:"email",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('email')},attrs:{"type":"text","placeholder":"someone@something.com","name":"email"},domProps:{"value":(_vm.instance.email)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.email=$event.target.value}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('contacts.common.phone')}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.phone),expression:"instance.phone"}],staticClass:"input",attrs:{"type":"text","placeholder":"+1555555555"},domProps:{"value":(_vm.instance.phone)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.phone=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('contacts.common.age')}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.age),expression:"instance.age"}],staticClass:"input",attrs:{"type":"number","min":"0","placeholder":"25"},domProps:{"value":(_vm.instance.age)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.age=$event.target.value},"blur":function($event){_vm.$forceUpdate()}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('contacts.common.city')}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.city),expression:"instance.city"}],staticClass:"input",attrs:{"type":"text","placeholder":"New York"},domProps:{"value":(_vm.instance.city)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.city=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('contacts.common.country')}},[_c('span',{staticClass:"select",slot:"field"},[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.country),expression:"instance.country"}],on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.instance.country=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"value":""}},[_vm._v("-- "+_vm._s(_vm.$t('contacts.common.country'))+" --")]),_vm._v(" "),_vm._l((_vm.countries),function(value,key){return _c('option',{domProps:{"value":key}},[_vm._v(_vm._s(value.name))])})],2)])])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column is-offset-one-quarter is-clearfix is-half"},[_c('button',{staticClass:"button is-primary ",attrs:{"type":"submit","name":"submit"}},[_vm._v(_vm._s(_vm.$t('common.save')))]),_vm._v(" "),_c('button',{staticClass:"button is-warning is-pulled-right",attrs:{"type":"button","name":"cancel"},on:{"click":_vm.cancel}},[_vm._v(_vm._s(_vm.$t('common.cancel')))])])])])])}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-056ba6ca", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-056ba6ca", __vue__options__)
+  }
+})()}
+});
+
+;require.register("components/contacts/Index.vue", function(exports, require, module) {
+;(function(){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _fadeInTransition = require('../common/transitions/fade-in-transition');
+
+var _fadeInTransition2 = _interopRequireDefault(_fadeInTransition);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  name: 'contacts',
+  components: {
+    'fade-in-transition': _fadeInTransition2.default
+  }
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('fade-in-transition',[_c('router-view')],1)}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1767ee83", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-1767ee83", __vue__options__)
+  }
+})()}
+});
+
+;require.register("components/contacts/List.vue", function(exports, require, module) {
+;(function(){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _api = require('../../api');
+
+var _api2 = _interopRequireDefault(_api);
+
+var _columnList = require('../common/lists/column-list.vue');
+
+var _columnList2 = _interopRequireDefault(_columnList);
+
+var _listPaginator = require('../common/lists/list-paginator.vue');
+
+var _listPaginator2 = _interopRequireDefault(_listPaginator);
+
+var _dataListMixin = require('../common/mixins/data-list-mixin');
+
+var _dataListMixin2 = _interopRequireDefault(_dataListMixin);
+
+var _contactListItem = require('./contact-list-item.vue');
+
+var _contactListItem2 = _interopRequireDefault(_contactListItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  name: 'contactList',
+  mixins: [_dataListMixin2.default],
+  data: function data() {
+    return {
+      items: [],
+      skip: 0,
+      total: 0,
+      limit: 15,
+      filters: {
+        englishLevel: '',
+        email: '',
+        city: ''
+      },
+      dataSource: _api2.default.contacts
+    };
+  },
+
+  components: {
+    'column-list': _columnList2.default,
+    'list-paginator': _listPaginator2.default,
+    'contact-list-item': _contactListItem2.default
+  },
+  methods: {
+    search: function search() {
+      this.loadItems(this.cleanFilters);
+    }
+  },
+  computed: {
+    cleanFilters: function cleanFilters() {
+      var f = {};
+      if (this.filters.email != '') {
+        f.email = {
+          $search: this.filters.email
+        };
+      }
+      if (this.filters.city != '') {
+        f.city = {
+          $search: this.filters.city
+        };
+      }
+      return f;
+    }
+  }
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('column-list',{attrs:{"title":_vm.$t('contacts.common.contacts')}},[_c('div',{slot:"filters"},[_c('div',{staticClass:"level"},[_c('div',{staticClass:"level-left"},[_c('div',{staticClass:"level-item"},[_c('div',{staticClass:"field has-addons"},[_c('p',{staticClass:"control"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.filters.email),expression:"filters.email"}],staticClass:"input",attrs:{"type":"text","placeholder":_vm.$t('contacts.list.searchEmail')},domProps:{"value":(_vm.filters.email)},on:{"input":function($event){if($event.target.composing){ return; }_vm.filters.email=$event.target.value}}})]),_vm._v(" "),_c('p',{staticClass:"control"},[_c('a',{staticClass:"button is-info",on:{"click":_vm.search}},[_vm._v("\n                "+_vm._s(_vm.$t('common.search'))+"\n              ")])])])]),_vm._v(" "),_c('div',{staticClass:"level-item"},[_c('div',{staticClass:"field has-addons"},[_c('p',{staticClass:"control"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.filters.city),expression:"filters.city"}],staticClass:"input",attrs:{"type":"text","placeholder":_vm.$t('contacts.list.searchCity')},domProps:{"value":(_vm.filters.city)},on:{"input":function($event){if($event.target.composing){ return; }_vm.filters.city=$event.target.value}}})]),_vm._v(" "),_c('p',{staticClass:"control"},[_c('a',{staticClass:"button is-info",on:{"click":_vm.search}},[_vm._v("\n                "+_vm._s(_vm.$t('common.search'))+"\n              ")])])])])]),_vm._v(" "),_c('div',{staticClass:"level-right"},[_c('div',{staticClass:"level-item"},[_c('router-link',{staticClass:"button is-success",attrs:{"to":{name: 'admin.contacts.new'},"title":_vm.$t('contacts.common.new')}},[_c('span',{staticClass:"icon"},[_c('i',{staticClass:"fa fa-plus"})])])],1)])]),_vm._v(" "),_c('list-paginator',{attrs:{"max-record":_vm.maxRecord,"total":_vm.total,"min-record":_vm.minRecord,"has-next":_vm.hasNext,"has-previous":_vm.hasPrevious},on:{"next":_vm.next,"previous":_vm.previous}}),_vm._v(" "),_c('br')],1),_vm._v(" "),_vm._l((_vm.items),function(item){return _c('div',{staticClass:"column is-4",slot:"items"},[_c('contact-list-item',{attrs:{"item":item}})],1)})],2)}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1062b0fd", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-1062b0fd", __vue__options__)
+  }
+})()}
+});
+
+;require.register("components/contacts/contact-list-item.vue", function(exports, require, module) {
+;(function(){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  props: {
+    item: {
+      type: Object,
+      required: true
+    }
+  }
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"card"},[_c('div',{staticClass:"card-content"},[_c('div',{staticClass:"content"},[_c('p',{staticClass:"title is-4"},[_c('router-link',{attrs:{"to":{ name: 'admin.contacts.detail', params: { id: _vm.item._id}}}},[_vm._v("\n          "+_vm._s(_vm.item.firstName)+" "+_vm._s(_vm.item.lastName)+"\n        ")])],1),_vm._v(" "),_c('p',{staticClass:"subtitle is-6"},[_vm._v(_vm._s(_vm.item.email))])]),_vm._v(" "),_c('div',{staticClass:"content"},[_c('span',{staticClass:"tag is-warning"},[_vm._v(_vm._s(_vm.item.phone))]),_vm._v(" "),_c('span',{staticClass:"tag is-primary"},[_vm._v(_vm._s(_vm.item.age))])])])])}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c05be774", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-c05be774", __vue__options__)
+  }
+})()}
+});
+
+;require.register("components/contacts/routes.js", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Index = require('./Index.vue');
+
+var _Index2 = _interopRequireDefault(_Index);
+
+var _List = require('./List.vue');
+
+var _List2 = _interopRequireDefault(_List);
+
+var _Create = require('./Create.vue');
+
+var _Create2 = _interopRequireDefault(_Create);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = [{
+  path: 'contacts',
+  component: _Index2.default,
+  meta: {
+    loginRequired: true
+  },
+  children: [{
+    name: 'admin.contacts',
+    path: '',
+    component: _List2.default,
+    meta: {
+      loginRequired: true,
+      title: 'Contacts'
+    }
+  }, {
+    name: 'admin.contacts.new',
+    path: 'new',
+    component: _Create2.default,
+    meta: {
+      loginRequired: true,
+      title: 'New Contact'
+    }
+  }, {
+    name: 'admin.contacts.detail',
+    path: ':id',
+    component: _Create2.default,
+    props: true,
+    meta: {
+      loginRequired: true,
+      title: 'Contact Details'
+    }
+  }]
+}];
+
+});
+
 require.register("components/error.vue", function(exports, require, module) {
 ;(function(){
 'use strict';
@@ -1437,7 +1864,7 @@ exports.default = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{},[_c('top-header'),_vm._v(" "),_c('div',{staticClass:"container is-fluid"},[_c('div',{staticClass:"columns is-mobile"},[_c('div',{staticClass:"column is-2-tablet is-3-mobile"},[_c('div',{staticClass:"container"},[_c('side-menu')],1)]),_vm._v(" "),_c('div',{staticClass:"column"},[_vm._t("content")],2)])])],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{},[_c('top-header'),_vm._v(" "),_c('div',{staticClass:"container is-fluid"},[_c('div',{staticClass:"columns is-mobile"},[_c('div',{staticClass:"column is-2-tablet is-3-mobile"},[_c('side-menu')],1),_vm._v(" "),_c('div',{staticClass:"column"},[_vm._t("content")],2)])])],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -1489,7 +1916,7 @@ exports.default = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('aside',{staticClass:"menu aside"},[_c('p'),_vm._v(" "),_c('p',{staticClass:"menu-label"},[_vm._v("\n    Usuarios\n  ")]),_vm._v(" "),_c('ul',{staticClass:"menu-list"},[_c('li',[_c('router-link',{attrs:{"to":{ name: 'admin.users' }}},[_c('span',{staticClass:"icon"},[_c('i',{staticClass:"fa fa-users"})]),_vm._v(" Usuarios")])],1)]),_vm._v(" "),_c('p',{staticClass:"menu-label"},[_vm._v("Registros")]),_vm._v(" "),_c('ul',{staticClass:"menu-list"},[_c('li',[_c('router-link',{attrs:{"to":{ name: 'admin.registrations' }}},[_c('span',{staticClass:"icon"},[_c('i',{staticClass:"fa fa-id-card"})]),_vm._v(" Registros")])],1)]),_vm._v(" "),_c('ul')])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('aside',{staticClass:"menu aside"},[_c('p'),_vm._v(" "),_c('p',{staticClass:"menu-label"},[_vm._v("\n    "+_vm._s(_vm.$t('sidebar.users'))+"\n  ")]),_vm._v(" "),_c('ul',{staticClass:"menu-list"},[_c('li',[_c('router-link',{attrs:{"to":{ name: 'admin.users' }}},[_c('span',{staticClass:"icon"},[_c('i',{staticClass:"fa fa-users"})]),_vm._v(" "+_vm._s(_vm.$t('sidebar.users')))])],1)]),_vm._v(" "),_c('p',{staticClass:"menu-label"},[_vm._v(_vm._s(_vm.$t("sidebar.events")))]),_vm._v(" "),_c('ul',{staticClass:"menu-list"},[_c('li',[_c('router-link',{attrs:{"to":{ name: 'admin.contacts' }}},[_c('span',{staticClass:"icon"},[_c('i',{staticClass:"fa fa-phone"})]),_vm._v(" "+_vm._s(_vm.$t('sidebar.contacts')))])],1),_vm._v(" "),_c('li',[_c('router-link',{attrs:{"to":{ name: 'admin.registrations' }}},[_c('span',{staticClass:"icon"},[_c('i',{staticClass:"fa fa-id-card"})]),_vm._v(" "+_vm._s(_vm.$t('sidebar.registrations')))])],1)])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -1536,7 +1963,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-6336f24a", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-6336f24a", __vue__options__)
+    hotAPI.reload("data-v-6336f24a", __vue__options__)
   }
 })()}
 });
@@ -1688,7 +2115,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-55ffeb80", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-55ffeb80", __vue__options__)
+    hotAPI.reload("data-v-55ffeb80", __vue__options__)
   }
 })()}
 });
@@ -1775,7 +2202,7 @@ exports.default = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('column-list',{attrs:{"title":"Registros"}},[_c('div',{staticClass:"container",slot:"filters"},[_c('div',{staticClass:"level"},[_c('div',{staticClass:"level-item"},[_c('div',{staticClass:"field has-addons"},[_c('p',{staticClass:"control"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.filters.email),expression:"filters.email"}],staticClass:"input",attrs:{"type":"text","placeholder":"Buscar por email"},domProps:{"value":(_vm.filters.email)},on:{"input":function($event){if($event.target.composing){ return; }_vm.filters.email=$event.target.value}}})]),_vm._v(" "),_c('p',{staticClass:"control"},[_c('a',{staticClass:"button is-info",on:{"click":_vm.search}},[_vm._v("\n              Buscar\n            ")])])])]),_vm._v(" "),_c('div',{staticClass:"level-item"},[_c('div',{staticClass:"field has-addons"},[_c('p',{staticClass:"control"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.filters.city),expression:"filters.city"}],staticClass:"input",attrs:{"type":"text","placeholder":"Buscar por ciudad"},domProps:{"value":(_vm.filters.city)},on:{"input":function($event){if($event.target.composing){ return; }_vm.filters.city=$event.target.value}}})]),_vm._v(" "),_c('p',{staticClass:"control"},[_c('a',{staticClass:"button is-info",on:{"click":_vm.search}},[_vm._v("\n              Buscar\n            ")])])])]),_vm._v(" "),_c('div',{staticClass:"level-item"},[_c('div',{staticClass:"field"},[_c('label',{staticClass:"label",attrs:{"for":"englishLevel"}},[_vm._v("Nivel de ingles")]),_vm._v(" "),_c('p',{staticClass:"control"},[_c('span',{staticClass:"select"},[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.filters.englishLevel),expression:"filters.englishLevel"}],attrs:{"name":"englishLevel"},on:{"change":[function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.filters.englishLevel=$event.target.multiple ? $$selectedVal : $$selectedVal[0]},_vm.search]}},[_c('option',{attrs:{"disabled":"","value":""}},[_vm._v("\n                  -- Cualquiera --\n                ")]),_vm._v(" "),_c('option',[_vm._v("No hablo")]),_vm._v(" "),_c('option',[_vm._v("Basico")]),_vm._v(" "),_c('option',[_vm._v("Intermedio")]),_vm._v(" "),_c('option',[_vm._v("Avanzado")])])])])])])]),_vm._v(" "),_c('list-paginator',{attrs:{"max-record":_vm.maxRecord,"total":_vm.total,"min-record":_vm.minRecord,"has-next":_vm.hasNext,"has-previous":_vm.hasPrevious},on:{"next":_vm.next,"previous":_vm.previous}}),_vm._v(" "),_c('br')],1),_vm._v(" "),_vm._l((_vm.items),function(item){return _c('div',{staticClass:"column is-4",slot:"items"},[_c('registration-list-item',{attrs:{"item":item}})],1)})],2)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('column-list',{attrs:{"title":"Registros"}},[_c('div',{slot:"filters"},[_c('div',{staticClass:"level"},[_c('div',{staticClass:"level-left"},[_c('div',{staticClass:"level-item"},[_c('div',{staticClass:"field has-addons"},[_c('p',{staticClass:"control"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.filters.email),expression:"filters.email"}],staticClass:"input",attrs:{"type":"text","placeholder":"Buscar por email"},domProps:{"value":(_vm.filters.email)},on:{"input":function($event){if($event.target.composing){ return; }_vm.filters.email=$event.target.value}}})]),_vm._v(" "),_c('p',{staticClass:"control"},[_c('a',{staticClass:"button is-info",on:{"click":_vm.search}},[_vm._v("\n                Buscar\n              ")])])])]),_vm._v(" "),_c('div',{staticClass:"level-item"},[_c('div',{staticClass:"field has-addons"},[_c('p',{staticClass:"control"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.filters.city),expression:"filters.city"}],staticClass:"input",attrs:{"type":"text","placeholder":"Buscar por ciudad"},domProps:{"value":(_vm.filters.city)},on:{"input":function($event){if($event.target.composing){ return; }_vm.filters.city=$event.target.value}}})]),_vm._v(" "),_c('p',{staticClass:"control"},[_c('a',{staticClass:"button is-info",on:{"click":_vm.search}},[_vm._v("\n                Buscar\n              ")])])])])]),_vm._v(" "),_c('div',{staticClass:"level-item"},[_c('div',{staticClass:"field"},[_c('label',{staticClass:"label",attrs:{"for":"englishLevel"}},[_vm._v("Nivel de ingles")]),_vm._v(" "),_c('p',{staticClass:"control"},[_c('span',{staticClass:"select"},[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.filters.englishLevel),expression:"filters.englishLevel"}],attrs:{"name":"englishLevel"},on:{"change":[function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.filters.englishLevel=$event.target.multiple ? $$selectedVal : $$selectedVal[0]},_vm.search]}},[_c('option',{attrs:{"disabled":"","value":""}},[_vm._v("\n                  -- Cualquiera --\n                ")]),_vm._v(" "),_c('option',[_vm._v("No hablo")]),_vm._v(" "),_c('option',[_vm._v("Basico")]),_vm._v(" "),_c('option',[_vm._v("Intermedio")]),_vm._v(" "),_c('option',[_vm._v("Avanzado")])])])])])])]),_vm._v(" "),_c('list-paginator',{attrs:{"max-record":_vm.maxRecord,"total":_vm.total,"min-record":_vm.minRecord,"has-next":_vm.hasNext,"has-previous":_vm.hasPrevious},on:{"next":_vm.next,"previous":_vm.previous}}),_vm._v(" "),_c('br')],1),_vm._v(" "),_vm._l((_vm.items),function(item){return _c('div',{staticClass:"column is-4",slot:"items"},[_c('registration-list-item',{attrs:{"item":item}})],1)})],2)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -1945,35 +2372,124 @@ var _routes7 = require('./registrations/routes');
 
 var _routes8 = _interopRequireDefault(_routes7);
 
+var _routes9 = require('./contacts/routes');
+
+var _routes10 = _interopRequireDefault(_routes9);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-// TODO: import users, home and registrations routes
-
-
 exports.default = [{
   path: '/',
   component: _Main2.default,
-  children: [].concat(_toConsumableArray(_routes4.default), _toConsumableArray(_routes6.default), _toConsumableArray(_routes8.default), _toConsumableArray(_routes2.default))
+  children: [].concat(_toConsumableArray(_routes4.default), _toConsumableArray(_routes6.default), _toConsumableArray(_routes8.default), _toConsumableArray(_routes10.default), _toConsumableArray(_routes2.default))
 }];
 
 });
 
 require.register("components/users/Create.vue", function(exports, require, module) {
 ;(function(){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = {};
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _fields = require('../common/forms/fields');
+
+var _fields2 = _interopRequireDefault(_fields);
+
+var _api = require('../../api');
+
+var _api2 = _interopRequireDefault(_api);
+
+var _vuex = require('vuex');
+
+var _countriesList = require('countries-list');
+
+var _countriesList2 = _interopRequireDefault(_countriesList);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  props: {
+    id: {
+      required: false,
+      type: String
+    }
+  },
+  components: {
+    'vb-field': _fields2.default.vbField
+  },
+  data: function data() {
+    return {
+      instance: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: ''
+      }
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    if (this.id) {
+      _api2.default.users.get(this.id).then(function (result) {
+        _this.instance = result.data;
+      }).catch(function (error) {});
+    }
+  },
+
+  methods: _extends({}, (0, _vuex.mapActions)(['addMessage']), {
+    save: function save() {
+      var _this2 = this;
+
+      this.$validator.validateAll().then(function (success) {
+        if (_this2.instance._id) {
+          _this2.update();
+        } else {
+          _this2.create();
+        }
+      }).catch(function (error) {});
+    },
+    create: function create() {
+      var _this3 = this;
+
+      _api2.default.users.create(this.instance).then(function (result) {
+        _this3.addMessage({
+          text: 'User created successfully',
+          type: 'success'
+        });
+        _this3.$router.push({ name: 'admin.users' });
+      }).catch(function (error) {});
+    },
+    update: function update() {
+      var _this4 = this;
+
+      _api2.default.users.update(this.instance._id, this.instance).then(function (result) {
+        _this4.addMessage({
+          text: 'User updated successfully',
+          type: 'success'
+        });
+        _this4.$router.push({ name: 'admin.users' });
+      }).catch(function (error) {});
+    },
+    cancel: function cancel() {
+      this.$router.push({ name: 'admin.users' });
+    }
+  })
+
+};
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _vm._m(0)}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{},[_c('h1',[_vm._v("Create new user")])])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"hero"},[_c('h1',{staticClass:"title is-2"},[_vm._v(_vm._s(_vm.$t('users.create.title' )))]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();$event.stopPropagation();_vm.save($event)}}},[_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('users.common.firstName'),"help":{show: _vm.errors.has('firstName'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.firstName),expression:"instance.firstName"},{name:"validate",rawName:"v-validate:firstName.initial",value:('required'),expression:"'required'",arg:"firstName",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('firstName')},attrs:{"type":"text","name":"firstName","placeholder":"John"},domProps:{"value":(_vm.instance.firstName)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.firstName=$event.target.value}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('users.common.lastName'),"help":{show: _vm.errors.has('lastName'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.lastName),expression:"instance.lastName"},{name:"validate",rawName:"v-validate:lastName.initial",value:('required'),expression:"'required'",arg:"lastName",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('lastName')},attrs:{"type":"text","placeholder":"Snow","name":"lastName"},domProps:{"value":(_vm.instance.lastName)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.lastName=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('users.common.email'),"help":{show: _vm.errors.has('email'), message: _vm.$t('fields.invalidEmail'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.email),expression:"instance.email"},{name:"validate",rawName:"v-validate:email.initial",value:('required|email'),expression:"'required|email'",arg:"email",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('email')},attrs:{"type":"text","placeholder":"someone@something.com","name":"email"},domProps:{"value":(_vm.instance.email)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.email=$event.target.value}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('users.common.password'),"help":{show: _vm.errors.has('password'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.password),expression:"instance.password"},{name:"validate",rawName:"v-validate:password.initial",value:('required'),expression:"'required'",arg:"password",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('password')},attrs:{"type":"password","placeholder":"somepass","name":"lastName"},domProps:{"value":(_vm.instance.password)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.password=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column is-offset-one-quarter is-clearfix is-half"},[_c('button',{staticClass:"button is-primary ",attrs:{"type":"submit","name":"submit"}},[_vm._v(_vm._s(_vm.$t('common.save')))]),_vm._v(" "),_c('button',{staticClass:"button is-warning is-pulled-right",attrs:{"type":"button","name":"cancel"},on:{"click":_vm.cancel}},[_vm._v(_vm._s(_vm.$t('common.cancel')))])])])])])}
+__vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -1982,39 +2498,6 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.createRecord("data-v-f6e06760", __vue__options__)
   } else {
     hotAPI.reload("data-v-f6e06760", __vue__options__)
-  }
-})()}
-});
-
-;require.register("components/users/Detail.vue", function(exports, require, module) {
-;(function(){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  props: {
-    id: {
-      required: true,
-      type: String
-    }
-  }
-};
-})()
-if (module.exports.__esModule) module.exports = module.exports.default
-var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
-if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{},[_c('h1',[_vm._v("User detail for "+_vm._s(_vm.id))])])}
-__vue__options__.staticRenderFns = []
-if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-15a2ddb6", __vue__options__)
-  } else {
-    hotAPI.reload("data-v-15a2ddb6", __vue__options__)
   }
 })()}
 });
@@ -2109,7 +2592,7 @@ exports.default = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('column-list',{attrs:{"title":"Usuarios"}},[_c('div',{staticClass:"container",slot:"filters"},[_c('list-paginator',{attrs:{"max-record":_vm.maxRecord,"total":_vm.total,"min-record":_vm.minRecord,"has-next":_vm.hasNext,"has-previous":_vm.hasPrevious},on:{"next":_vm.next,"previous":_vm.previous}}),_vm._v(" "),_c('br')],1),_vm._v(" "),_vm._l((_vm.items),function(item){return _c('div',{staticClass:"column is-6",slot:"items"},[_c('user-list-item',{attrs:{"item":item}})],1)})],2)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('column-list',{attrs:{"title":"Usuarios"}},[_c('div',{slot:"filters"},[_c('list-paginator',{attrs:{"max-record":_vm.maxRecord,"total":_vm.total,"min-record":_vm.minRecord,"has-next":_vm.hasNext,"has-previous":_vm.hasPrevious},on:{"next":_vm.next,"previous":_vm.previous}}),_vm._v(" "),_c('br')],1),_vm._v(" "),_vm._l((_vm.items),function(item){return _c('div',{staticClass:"column is-6",slot:"items"},[_c('user-list-item',{attrs:{"item":item}})],1)})],2)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -2142,10 +2625,6 @@ var _List = require('./List.vue');
 
 var _List2 = _interopRequireDefault(_List);
 
-var _Detail = require('./Detail.vue');
-
-var _Detail2 = _interopRequireDefault(_Detail);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = [{
@@ -2170,7 +2649,7 @@ exports.default = [{
     }
   }, {
     name: 'admin.users.detail',
-    component: _Detail2.default,
+    component: _Create2.default,
     path: ':id',
     props: true,
     meta: {
@@ -2361,12 +2840,129 @@ exports.default = routes;
 
 });
 
+require.register("i18n/en/index.js", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var messages = {
+  common: {
+    signup: 'Sign Up',
+    search: 'Search',
+    save: 'Save',
+    cancel: 'Cancel'
+  },
+  fields: {
+    emailField: 'Email',
+    passwordField: 'Password',
+    requiredMessage: 'This field is required',
+    invalidEmail: 'Not a valid email'
+  },
+  login: {
+    login: 'Log In',
+    rememberMe: 'Remember Me',
+    noAccount: 'Don\'t have an account?'
+
+  },
+  validations: {
+    emailNotValid: 'Not a valid email',
+    required: 'This field is required'
+  },
+  contacts: {
+    common: {
+      contacts: 'Contacts',
+      new: 'New Contact',
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      phone: 'Phone',
+      email: 'Email',
+      city: 'City',
+      age: 'Age',
+      country: 'Country'
+    },
+    list: {
+      searchEmail: 'Search by Email',
+      searchCity: 'Search by City'
+    },
+    create: {
+      title: 'New Contact'
+    }
+
+  },
+  sidebar: {
+    users: 'Users',
+    events: 'Events',
+    contacts: 'Contacts',
+    registrations: 'Registrations'
+  },
+  users: {
+    common: {
+      users: 'Users',
+      new: 'New User',
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      email: 'Email',
+      password: 'Password'
+    },
+    create: {
+      title: 'New User'
+    }
+  }
+};
+
+exports.default = messages;
+
+});
+
+require.register("i18n/es/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var messages = {};
+
+exports.default = messages;
+
+});
+
+require.register("i18n/index.js", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _en = require('./en');
+
+var _en2 = _interopRequireDefault(_en);
+
+var _es = require('./es');
+
+var _es2 = _interopRequireDefault(_es);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var messages = {
+  en: _en2.default,
+  es: _es2.default
+};
+
+exports.default = messages;
+
+});
+
 require.register("index.js", function(exports, require, module) {
 'use strict';
 
 var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
+
+var _countriesList = require('countries-list');
+
+var _countriesList2 = _interopRequireDefault(_countriesList);
 
 var _vue = require('vue');
 
@@ -2381,6 +2977,10 @@ require('vueify/lib/insert-css');
 var _veeValidate = require('vee-validate');
 
 var _veeValidate2 = _interopRequireDefault(_veeValidate);
+
+var _vueI18n = require('vue-i18n');
+
+var _vueI18n2 = _interopRequireDefault(_vueI18n);
 
 var _routes = require('./config/routes');
 
@@ -2398,11 +2998,17 @@ var _vuexStore = require('./vuex-store');
 
 var _vuexStore2 = _interopRequireDefault(_vuexStore);
 
+var _i18n = require('./i18n');
+
+var _i18n2 = _interopRequireDefault(_i18n);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.use(_vueRouter2.default);
 // setup vee-validate
 _vue2.default.use(_veeValidate2.default);
+// setup vue-i18n
+_vue2.default.use(_vueI18n2.default);
 
 var router = new _vueRouter2.default({
   routes: _routes2.default,
@@ -2418,10 +3024,18 @@ var router = new _vueRouter2.default({
 router.beforeEach(_hooks2.default.loginRequired);
 router.afterEach(_hooks2.default.changeTitle);
 
+// Translations
+var i18n = new _vueI18n2.default({
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages: _i18n2.default
+});
+
 /* eslint-disable no-new */
 var app = new _vue2.default({
   router: router,
   store: _vuexStore2.default,
+  i18n: i18n,
   render: function render(h) {
     return h(_App2.default);
   }

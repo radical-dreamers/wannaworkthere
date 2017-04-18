@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="">
+  <div class="hero">
     <h1 class="title is-2" v-if="title">{{ title }}</h1>
     <slot name="filters"></slot>
     <div class="columns is-multiline is-narrow">

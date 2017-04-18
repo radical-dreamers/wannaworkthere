@@ -1,6 +1,6 @@
 <template lang="html">
   <column-list title="Usuarios">
-    <div slot="filters" class="container">
+    <div slot="filters">
       <list-paginator :max-record="maxRecord" :total="total" :min-record="minRecord" :has-next="hasNext" :has-previous="hasPrevious" v-on:next="next" v-on:previous="previous"></list-paginator>
       <br/>
     </div>

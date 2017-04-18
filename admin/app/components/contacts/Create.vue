@@ -1,17 +1,17 @@
 <template lang="html">
   <div class="hero">
-    <h1 class="title is-2">{{ $t('users.create.title' )}}</h1>
+    <h1 class="title is-2">{{ $t('contacts.create.title' )}}</h1>
     <form class="" @submit.prevent.stop="save">
       <div class="columns">
         <div class="column">
-          <vb-field :label="$t('users.common.firstName')" :help="{show: errors.has('firstName'), message: $t('fields.requiredMessage'), level: 'is-danger'}">
+          <vb-field :label="$t('contacts.common.firstName')" :help="{show: errors.has('firstName'), message: $t('fields.requiredMessage'), level: 'is-danger'}">
             <input slot="field" class="input" type="text" v-model="instance.firstName"
               name="firstName" placeholder="John" v-validate:firstName.initial="'required'"
               :class="{'is-danger': errors.has('firstName')}"/>
           </vb-field>
         </div>
         <div class="column">
-          <vb-field :label="$t('users.common.lastName')" :help="{show: errors.has('lastName'), message: $t('fields.requiredMessage'), level: 'is-danger'}">
+          <vb-field :label="$t('contacts.common.lastName')" :help="{show: errors.has('lastName'), message: $t('fields.requiredMessage'), level: 'is-danger'}">
             <input slot="field" class="input" type="text" v-model="instance.lastName" placeholder="Snow"
               name="lastName" v-validate:lastName.initial="'required'" :class="{'is-danger': errors.has('lastName')}"/>
           </vb-field>
@@ -19,15 +19,38 @@
       </div>
       <div class="columns">
         <div class="column">
-          <vb-field :label="$t('users.common.email')" :help="{show: errors.has('email'), message: $t('fields.invalidEmail'), level: 'is-danger'}">
+          <vb-field :label="$t('contacts.common.email')" :help="{show: errors.has('email'), message: $t('fields.invalidEmail'), level: 'is-danger'}">
             <input slot="field" class="input" type="text" v-model="instance.email" placeholder="someone@something.com"
               name="email" v-validate:email.initial="'required|email'" :class="{'is-danger': errors.has('email')}"/>
           </vb-field>
         </div>
         <div class="column">
-          <vb-field :label="$t('users.common.password')" :help="{show: errors.has('password'), message: $t('fields.requiredMessage'), level: 'is-danger'}">
-            <input slot="field" class="input" type="password" v-model="instance.password"
-            placeholder="somepass" name="lastName" v-validate:password.initial="'required'" :class="{'is-danger': errors.has('password')}"/>
+          <vb-field :label="$t('contacts.common.phone')">
+            <input slot="field" class="input" type="text" v-model="instance.phone" placeholder="+1555555555"/>
+          </vb-field>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <vb-field :label="$t('contacts.common.age')">
+            <input slot="field" class="input" type="number" min="0" v-model="instance.age" placeholder="25"/>
+          </vb-field>
+        </div>
+        <div class="column">
+          <vb-field :label="$t('contacts.common.city')">
+            <input slot="field" class="input" type="text" v-model="instance.city" placeholder="New York"/>
+          </vb-field>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <vb-field :label="$t('contacts.common.country')">
+            <span class="select" slot="field">
+              <select v-model="instance.country">
+                <option value="">-- {{ $t('contacts.common.country') }} --</option>
+                <option v-for="(value, key) in countries" :value="key">{{ value.name }}</option>
+              </select>
+            </span>
           </vb-field>
         </div>
       </div>
@@ -64,13 +87,17 @@ export default {
         firstName: '',
         lastName: '',
         email: '',
-        password: ''
-      }
+        phone: '',
+        age: '',
+        city: '',
+        country: ''
+      },
+      countries: countriesList.countries
     }
   },
   created () {
     if (this.id) {
-      api.users.get(this.id).then((result)=> {
+      api.contacts.get(this.id).then((result)=> {
         this.instance = result.data
       }).catch((error)=> { /* do nothing here*/})
     }
@@ -89,25 +116,25 @@ export default {
       }).catch((error)=> {})
     },
     create () {
-      api.users.create(this.instance).then((result)=> {
+      api.contacts.create(this.instance).then((result)=> {
         this.addMessage({
-          text: 'User created successfully',
+          text: 'Contact created successfully',
           type: 'success'
         })
-        this.$router.push({name: 'admin.users'})
+        this.$router.push({name: 'admin.contacts'})
       }).catch((error)=> { /* Do nothing here */})
     },
     update () {
-      api.users.update(this.instance._id, this.instance).then((result)=> {
+      api.contacts.update(this.instance._id, this.instance).then((result)=> {
         this.addMessage({
-          text: 'User updated successfully',
+          text: 'Contact updated successfully',
           type: 'success'
         })
-        this.$router.push({name: 'admin.users'})
+        this.$router.push({name: 'admin.contacts'})
       }).catch((error) => { /* Do nothing here */ })
     },
     cancel () {
-      this.$router.push({name: 'admin.users'})
+      this.$router.push({name: 'admin.contacts'})
     }
   }
 

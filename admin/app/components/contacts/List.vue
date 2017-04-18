@@ -1,17 +1,17 @@
 <template lang="html">
 
-  <column-list title="Registros">
-    <div slot="filters" >
+  <column-list :title="$t('contacts.common.contacts')">
+    <div slot="filters">
       <div class="level">
         <div class="level-left">
           <div class="level-item">
             <div class="field has-addons">
               <p class="control">
-                <input class="input" type="text" placeholder="Buscar por email" v-model="filters.email">
+                <input class="input" type="text" v-bind:placeholder="$t('contacts.list.searchEmail')" v-model="filters.email">
               </p>
               <p class="control">
                 <a class="button is-info" @click="search">
-                  Buscar
+                  {{ $t('common.search') }}
                 </a>
               </p>
             </div>
@@ -19,34 +19,23 @@
           <div class="level-item">
             <div class="field has-addons">
               <p class="control">
-                <input class="input" type="text" placeholder="Buscar por ciudad" v-model="filters.city">
+                <input class="input" type="text" v-bind:placeholder="$t('contacts.list.searchCity')" v-model="filters.city">
               </p>
               <p class="control">
                 <a class="button is-info" @click="search">
-                  Buscar
+                  {{ $t('common.search') }}
                 </a>
               </p>
             </div>
           </div>
         </div>
-
-
-        <div class="level-item">
-          <div class="field">
-            <label for="englishLevel" class="label">Nivel de ingles</label>
-            <p class="control">
-              <span class="select">
-                <select v-model="filters.englishLevel" name="englishLevel" v-on:change="search">
-                  <option disabled value="">
-                    -- Cualquiera --
-                  </option>
-                  <option>No hablo</option>
-                  <option>Basico</option>
-                  <option>Intermedio</option>
-                  <option>Avanzado</option>
-                </select>
+        <div class="level-right">
+          <div class="level-item">
+            <router-link :to="{name: 'admin.contacts.new'}" class="button is-success" :title="$t('contacts.common.new')">
+              <span class="icon">
+                <i class="fa fa-plus"></i>
               </span>
-            </p>
+            </router-link>
           </div>
         </div>
 
@@ -56,7 +45,7 @@
     </div>
 
     <div slot="items" class="column is-4" v-for="item in items">
-        <registration-list-item :item="item"></registration-list-item>
+        <contact-list-item :item="item"></contact-list-item>
     </div>
 
   </column-list>
@@ -69,10 +58,10 @@ import api from '../../api'
 import ColumnList from '../common/lists/column-list.vue'
 import ListPaginator from '../common/lists/list-paginator.vue'
 import DataListMixin from '../common/mixins/data-list-mixin'
-import RegistrationListItem from './registration-list-item.vue'
+import ContactListItem from './contact-list-item.vue'
 
 export default {
-  name: 'registrationsList',
+  name: 'contactList',
   mixins: [DataListMixin],
   data () {
     return {
@@ -85,13 +74,13 @@ export default {
         email: '',
         city: ''
       },
-      dataSource: api.registrations
+      dataSource: api.contacts
     }
   },
   components: {
     'column-list': ColumnList,
     'list-paginator': ListPaginator,
-    'registration-list-item': RegistrationListItem
+    'contact-list-item': ContactListItem
   },
   methods: {
     search() {
@@ -105,9 +94,6 @@ export default {
      */
     cleanFilters () {
       let f = {}
-      if (this.filters.englishLevel != '') {
-        f.englishLevel = this.filters.englishLevel
-      }
       if (this.filters.email != '') {
         f.email = {
           $search: this.filters.email

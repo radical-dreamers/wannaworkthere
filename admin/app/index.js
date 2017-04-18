@@ -1,19 +1,24 @@
 import moment from 'moment'
+import countriesList from 'countries-list'
 
 import Vue from 'vue'
 import Router from 'vue-router'
 import 'vueify/lib/insert-css'
 import VeeValidate from 'vee-validate'
+import VueI18n from 'vue-i18n'
 
 import routes from './config/routes'
 import routerHooks from './config/routes/hooks'
 import App from './App'
 import store from './vuex-store'
+import translations from './i18n'
 
 
 Vue.use(Router)
 // setup vee-validate
 Vue.use(VeeValidate)
+// setup vue-i18n
+Vue.use(VueI18n)
 
 const router = new Router({
   routes,
@@ -28,10 +33,18 @@ const router = new Router({
 router.beforeEach(routerHooks.loginRequired)
 router.afterEach(routerHooks.changeTitle)
 
+// Translations
+const i18n = new VueI18n({
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages: translations
+})
+
 /* eslint-disable no-new */
 const app = new Vue({
   router,
   store,
+  i18n,
   render: h => h(App)
 })
 
