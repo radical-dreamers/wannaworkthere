@@ -4,7 +4,7 @@ import authRoutes from './auth/routes'
 import usersRoutes from './users/routes'
 import registrationsRoutes from './registrations/routes'
 import contactsRoutes from './contacts/routes'
-
+import eventRoutes from './events/routes'
 
 export default [
   {
@@ -15,6 +15,7 @@ export default [
       ...usersRoutes,
       ...registrationsRoutes,
       ...contactsRoutes,
+      ...eventRoutes,
       ...homeRoutes
     ]
   }

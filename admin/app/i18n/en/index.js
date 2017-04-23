@@ -42,6 +42,27 @@ const messages = {
     }
 
   },
+  events: {
+    common: {
+      events: 'Events',
+      new: 'New Event',
+      title: 'Title',
+      description: 'Description',
+      startDate: 'Start Date',
+      endDate: 'End Date',
+      createdAt: 'Created At',
+      updatedAt: 'UpdatedAt'
+    },
+    list: {
+      searchTitle: 'Search by Title',
+
+    },
+    create: {
+      title: 'New Event',
+      descriptionHelp: 'This is the event\'s description. Accepts Markdown'
+    }
+
+  },
   sidebar: {
     users: 'Users',
     events: 'Events',

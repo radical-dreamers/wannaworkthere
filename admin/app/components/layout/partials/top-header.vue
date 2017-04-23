@@ -3,7 +3,7 @@
     <div class="container">
       <div class="nav-left">
         <router-link class="nav-item title is-3" :to="{ name: 'admin.home' }">
-          ALTIMETRIK - Admin Panel
+          {{ title }} - Admin Panel
         </router-link>
       </div>
       <span class="nav-toggle"  @click="toggleMenu">
@@ -24,10 +24,14 @@
 </template>
 
 <script>
+
+import config from '../../../config'
+
 export default {
   data () {
     return {
-      isOpen: false
+      isOpen: false,
+      title: config.appTitle
     }
   },
   methods: {

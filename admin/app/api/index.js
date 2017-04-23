@@ -2,6 +2,7 @@ import auth from './auth'
 import registrations from './registrations'
 import users from './users'
 import contacts from './contacts'
+import events from './events'
 import interceptors from './interceptors'
 import api from '../config/api'
 
@@ -19,5 +20,6 @@ export default {
   auth,
   registrations,
   users,
-  contacts
+  contacts,
+  events
 }
