@@ -1089,15 +1089,236 @@ var _vbField = require('./vb-field.vue');
 
 var _vbField2 = _interopRequireDefault(_vbField);
 
+var _vbInput = require('./vb-input.vue');
+
+var _vbInput2 = _interopRequireDefault(_vbInput);
+
+var _vbMarkdown = require('./vb-markdown.vue');
+
+var _vbMarkdown2 = _interopRequireDefault(_vbMarkdown);
+
+var _vbTagInput = require('./vb-tag-input.vue');
+
+var _vbTagInput2 = _interopRequireDefault(_vbTagInput);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-  vbField: _vbField2.default
+  vbField: _vbField2.default,
+  vbInput: _vbInput2.default,
+  vbMarkdown: _vbMarkdown2.default,
+  vbTagInput: _vbTagInput2.default
 };
 
 });
 
-require.register("components/common/forms/fields/vb-field.vue", function(exports, require, module) {
+require.register("components/common/forms/fields/vb-autocomplete.vue", function(exports, require, module) {
+;(function(){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var BaseSearchStrategy = function () {
+  function BaseSearchStrategy(datasource) {
+    var searchFields = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+    _classCallCheck(this, BaseSearchStrategy);
+
+    this.datasource = datasource;
+    this.searchFields = searchFields;
+  }
+
+  _createClass(BaseSearchStrategy, [{
+    key: 'find',
+    value: function find(search) {
+      throw Error('Not implemented. please use a subclass');
+    }
+  }]);
+
+  return BaseSearchStrategy;
+}();
+
+var SimpleArraySearchStrategy = function (_BaseSearchStrategy) {
+  _inherits(SimpleArraySearchStrategy, _BaseSearchStrategy);
+
+  function SimpleArraySearchStrategy(datasource) {
+    var searchFields = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+    _classCallCheck(this, SimpleArraySearchStrategy);
+
+    return _possibleConstructorReturn(this, (SimpleArraySearchStrategy.__proto__ || Object.getPrototypeOf(SimpleArraySearchStrategy)).call(this, datasource, searchFields));
+  }
+
+  _createClass(SimpleArraySearchStrategy, [{
+    key: 'find',
+    value: function find(search) {
+      return this.datasource.reduce(function (acc, item) {
+        if (String(item).indexOf(search) >= 0) {
+          acc.push(item);
+        }
+        return acc;
+      }, []);
+    }
+  }]);
+
+  return SimpleArraySearchStrategy;
+}(BaseSearchStrategy);
+
+var ObjectArraySearchStrategy = function (_BaseSearchStrategy2) {
+  _inherits(ObjectArraySearchStrategy, _BaseSearchStrategy2);
+
+  function ObjectArraySearchStrategy(datasource) {
+    var searchFields = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+    _classCallCheck(this, ObjectArraySearchStrategy);
+
+    return _possibleConstructorReturn(this, (ObjectArraySearchStrategy.__proto__ || Object.getPrototypeOf(ObjectArraySearchStrategy)).call(this, datasource, searchFields));
+  }
+
+  _createClass(ObjectArraySearchStrategy, [{
+    key: 'find',
+    value: function find(search) {
+      var _this3 = this;
+
+      if (this.searchFields.length == 0) {
+        return [];
+      }
+      return this.datasource.reduce(function (acc, item) {
+        for (field in Object.getValues(_this3.searchFields)) {
+          if (String(item[field]).indexOf(search) >= 0) {
+            acc.push(item);
+            break;
+          }
+        }
+        return acc;
+      }, []);
+    }
+  }]);
+
+  return ObjectArraySearchStrategy;
+}(BaseSearchStrategy);
+
+var RemoteSearchStrategy = function (_BaseSearchStrategy3) {
+  _inherits(RemoteSearchStrategy, _BaseSearchStrategy3);
+
+  function RemoteSearchStrategy(datasource) {
+    var searchFields = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+    _classCallCheck(this, RemoteSearchStrategy);
+
+    return _possibleConstructorReturn(this, (RemoteSearchStrategy.__proto__ || Object.getPrototypeOf(RemoteSearchStrategy)).call(this, datasource, searchFields));
+  }
+
+  _createClass(RemoteSearchStrategy, [{
+    key: 'find',
+    value: function find(search) {
+      if (this.searchFields.length == 0) {
+        return [];
+      }
+      var searchFilter = this.searchFields.reduce(function (acc, item) {
+        acc[item] = {
+          $search: search
+        };
+        return acc;
+      }, {});
+      return this.datasource.find(searchFilter);
+    }
+  }]);
+
+  return RemoteSearchStrategy;
+}(BaseSearchStrategy);
+
+exports.default = {
+  data: function data() {
+    return {
+      search: '',
+      actualValue: '',
+      options: [],
+      searchStrategy: null
+    };
+  },
+
+  props: {
+    value: {
+      required: true,
+      type: String
+    },
+    dataSource: {
+      required: true
+    },
+    searchFields: {
+      required: false,
+      type: Array,
+      default: []
+    },
+    name: {
+      required: false,
+      type: String,
+      default: ''
+    },
+    strategy: {
+      required: false,
+      type: Object
+    }
+  },
+  methods: {
+    updateValue: function updateValue(newValue) {
+      this.$emit('input', newValue);
+    },
+    filter: function filter() {
+      var _this5 = this;
+
+      if (this.search.length >= 2) {
+        this.searchStrategy.find(this.search, this.dataSource, this.searchFields).then(function (result) {
+          _this5.options = result;
+        });
+      }
+    },
+    _setSearchStrategy: function _setSearchStrategy() {
+      if (this.datasource instanceof Array) {
+        if (this.datasource.length >= 0 && this.datasource[0] instanceof Object) {
+          this.searchStrategy = new ObjectArraySearchStrategy();
+        } else {
+          this.searchStrategy = new SimpleArraySearchStrategy();
+        }
+      } else {
+        this.searchStrategy = new RemoteSearchStrategy();
+      }
+    }
+  },
+  created: function created() {
+    this._setSearchStrategy();
+  }
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.search),expression:"search"}],attrs:{"type":"text","name":_vm.name},domProps:{"value":(_vm.search)},on:{"input":[function($event){if($event.target.composing){ return; }_vm.search=$event.target.value},function($event){_vm.filter()}]}})}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0d58f64c", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-0d58f64c", __vue__options__)
+  }
+})()}
+});
+
+;require.register("components/common/forms/fields/vb-field.vue", function(exports, require, module) {
 ;(function(){
 "use strict";
 
@@ -1138,6 +1359,244 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.createRecord("data-v-52a04178", __vue__options__)
   } else {
     hotAPI.reload("data-v-52a04178", __vue__options__)
+  }
+})()}
+});
+
+;require.register("components/common/forms/fields/vb-input.vue", function(exports, require, module) {
+;(function(){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _vbField = require('./vb-field.vue');
+
+var _vbField2 = _interopRequireDefault(_vbField);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  components: {
+    'vb-field': _vbField2.default
+  },
+  props: {
+    leftIcon: {
+      type: String,
+      required: false
+    },
+    rightIcon: {
+      type: String,
+      required: false
+    },
+    label: {
+      type: String,
+      required: false
+    },
+    value: {
+      required: true
+    },
+    type: {
+      required: true,
+      type: String
+    },
+    placeholder: {
+      required: false,
+      type: String,
+      default: ''
+    },
+    name: {
+      type: String,
+      required: false
+    },
+    validation: {
+      type: String,
+      required: false
+    }
+  },
+  methods: {
+    emitInput: function emitInput(value) {
+      this.$emit('input', value);
+    }
+  }
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('vb-field',{attrs:{"label":_vm.label,"rightIcon":_vm.rightIcon,"leftIcon":_vm.leftIcon,"help":{show: _vm.errors.has(_vm.name), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"validate",rawName:"v-validate:bind",value:(_vm.validation),expression:"validation",arg:"bind"}],staticClass:"input",class:{'is-danger': _vm.name && _vm.errors.has(_vm.name)},attrs:{"type":_vm.type,"placeholder":_vm.placeholder,"name":_vm.name,"data-vv-name":_vm.name},domProps:{"value":_vm.value},on:{"input":function($event){_vm.emitInput($event.target.value)}},slot:"field"})])}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6cf51048", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-6cf51048", __vue__options__)
+  }
+})()}
+});
+
+;require.register("components/common/forms/fields/vb-markdown.vue", function(exports, require, module) {
+;(function(){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _marked = require('marked');
+
+var _marked2 = _interopRequireDefault(_marked);
+
+var _vbField = require('./vb-field.vue');
+
+var _vbField2 = _interopRequireDefault(_vbField);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+
+  props: {
+    value: {
+      type: String,
+      required: true
+    },
+    label: {
+      type: String,
+      required: false
+    },
+    help: {
+      type: Object,
+      required: false
+    }
+  },
+  computed: {
+    mdText: function mdText() {
+      return this.buildMarkdown(this.value);
+    }
+  },
+  methods: {
+    handleInput: function handleInput(value) {
+      this.mdText = this.buildMarkdown(value);
+      this.emitInput(value);
+    },
+
+    emitInput: function emitInput(value) {
+      this.$emit('input', value);
+    },
+    buildMarkdown: function buildMarkdown(value) {
+      return (0, _marked2.default)(value);
+    }
+  },
+  components: {
+    'vb-field': _vbField2.default
+  },
+  created: function created() {}
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.label,"help":_vm.help}},[_c('textarea',{staticClass:"textarea",attrs:{"type":"text","name":"description"},domProps:{"value":_vm.value},on:{"keyup":function($event){_vm.handleInput($event.target.value)}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('div',{staticClass:"card"},[_c('div',{staticClass:"card-content",domProps:{"innerHTML":_vm._s(_vm.mdText)}})])])])}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-18fef361", __vue__options__)
+  } else {
+    hotAPI.rerender("data-v-18fef361", __vue__options__)
+  }
+})()}
+});
+
+;require.register("components/common/forms/fields/vb-tag-input.vue", function(exports, require, module) {
+;(function(){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _vbField = require('./vb-field.vue');
+
+var _vbField2 = _interopRequireDefault(_vbField);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  data: function data() {
+    return {
+      tagText: ''
+    };
+  },
+
+  props: {
+    value: {
+      type: Array,
+      required: true
+    },
+    label: {
+      type: String,
+      required: false,
+      default: 'Tags'
+    },
+    separator: {
+      type: String,
+      required: false,
+      default: ','
+    },
+    help: {
+      type: Object,
+      required: false
+    }
+  },
+  methods: {
+    handleInput: function handleInput(value) {
+      if (value.indexOf(this.separator) >= 0) {
+        this.value.push(value.split(this.separator)[0].trim());
+        this.$refs.input.value = '';
+        this.emitInput(this.tagList);
+      }
+    },
+
+    emitInput: function emitInput(value) {
+      this.$emit('input', value);
+    },
+    deleteTag: function deleteTag(index) {
+      if (index >= 0) {
+        this.value.splice(index, 1);
+        this.emitInput(this.tagList);
+      }
+    }
+  },
+  computed: {
+    tagList: function tagList() {
+      return this.value;
+    }
+  },
+  components: {
+    'vb-field': _vbField2.default
+  }
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{},[_c('vb-field',{attrs:{"label":_vm.label,"help":_vm.help}},[_c('input',{ref:"input",staticClass:"input",attrs:{"type":"text","placeholder":""},on:{"input":function($event){_vm.handleInput($event.target.value)}},slot:"field"})]),_vm._v(" "),_vm._l((_vm.tagList),function(tag,index){return _c('div',{staticClass:"tag is-success"},[_vm._v("\n    "+_vm._s(tag)+"\n    "),_c('button',{staticClass:"delete",on:{"click":function($event){$event.preventDefault();$event.stopPropagation();_vm.deleteTag(index)}}})])})],2)}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-17ac96d5", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-17ac96d5", __vue__options__)
   }
 })()}
 });
@@ -1194,7 +1653,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-33e8878c", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-33e8878c", __vue__options__)
+    hotAPI.reload("data-v-33e8878c", __vue__options__)
   }
 })()}
 });
@@ -1846,6 +2305,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _marked = require('marked');
+
+var _marked2 = _interopRequireDefault(_marked);
+
 var _fields = require('../common/forms/fields');
 
 var _fields2 = _interopRequireDefault(_fields);
@@ -1870,7 +2333,9 @@ exports.default = {
     }
   },
   components: {
-    'vb-field': _fields2.default.vbField
+    'vb-field': _fields2.default.vbField,
+    'vb-markdown': _fields2.default.vbMarkdown,
+    'vb-tag-input': _fields2.default.vbTagInput
   },
   data: function data() {
     return {
@@ -1878,7 +2343,8 @@ exports.default = {
         title: '',
         description: '',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        tags: []
       }
     };
   },
@@ -1887,7 +2353,7 @@ exports.default = {
 
     if (this.id) {
       _api2.default.events.get(this.id).then(function (result) {
-        _this.instance = result.data;
+        Object.assign(_this.instance, result.data);
       }).catch(function (error) {});
     }
   },
@@ -1936,7 +2402,7 @@ exports.default = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"hero"},[_c('h1',{staticClass:"title is-2"},[_vm._v(_vm._s(_vm.$t('events.create.title' )))]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();$event.stopPropagation();_vm.save($event)}}},[_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.title'),"help":{show: _vm.errors.has('title'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.title),expression:"instance.title"},{name:"validate",rawName:"v-validate:event.initial",value:('required'),expression:"'required'",arg:"event",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('event')},attrs:{"type":"text","name":"title","placeholder":"Some event"},domProps:{"value":(_vm.instance.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.title=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.startDate'),"help":{show: _vm.errors.has('startDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.startDate),expression:"instance.startDate"},{name:"validate",rawName:"v-validate:startDate.initial",value:('required'),expression:"'required'",arg:"startDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('startDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"startDate"},domProps:{"value":(_vm.instance.startDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.startDate=$event.target.value}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.endDate'),"help":{show: _vm.errors.has('endDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.endDate),expression:"instance.endDate"},{name:"validate",rawName:"v-validate:endDate.initial",value:('required'),expression:"'required'",arg:"endDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('endDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"endDate"},domProps:{"value":(_vm.instance.endDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.endDate=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.description'),"help":{show: true, message: _vm.$t('events.create.descriptionHelp'), level: 'is-primary'}}},[_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.description),expression:"instance.description"}],staticClass:"textarea",attrs:{"type":"text","placeholder":"Snow","name":"description"},domProps:{"value":(_vm.instance.description)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.description=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column is-offset-one-quarter is-clearfix is-half"},[_c('button',{staticClass:"button is-primary ",attrs:{"type":"submit","name":"submit"}},[_vm._v(_vm._s(_vm.$t('common.save')))]),_vm._v(" "),_c('button',{staticClass:"button is-warning is-pulled-right",attrs:{"type":"button","name":"cancel"},on:{"click":_vm.cancel}},[_vm._v(_vm._s(_vm.$t('common.cancel')))])])])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"hero"},[_c('h1',{staticClass:"title is-2"},[_vm._v(_vm._s(_vm.$t('events.create.title' )))]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();$event.stopPropagation();_vm.save($event)}}},[_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.title'),"help":{show: _vm.errors.has('title'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.title),expression:"instance.title"},{name:"validate",rawName:"v-validate:title.initial",value:('required'),expression:"'required'",arg:"title",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('title')},attrs:{"type":"text","name":"title","placeholder":"Some event"},domProps:{"value":(_vm.instance.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.title=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.startDate'),"help":{show: _vm.errors.has('startDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.startDate),expression:"instance.startDate"},{name:"validate",rawName:"v-validate:startDate.initial",value:('required'),expression:"'required'",arg:"startDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('startDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"startDate"},domProps:{"value":(_vm.instance.startDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.startDate=$event.target.value}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.endDate'),"help":{show: _vm.errors.has('endDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.endDate),expression:"instance.endDate"},{name:"validate",rawName:"v-validate:endDate.initial",value:('required'),expression:"'required'",arg:"endDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('endDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"endDate"},domProps:{"value":(_vm.instance.endDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.endDate=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('vb-markdown',{attrs:{"label":_vm.$t('events.common.description'),"help":{show: true, message: _vm.$t('events.create.descriptionHelp'), level: 'is-primary'}},model:{value:(_vm.instance.description),callback:function ($$v) {_vm.instance.description=$$v},expression:"instance.description"}}),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-tag-input',{attrs:{"label":_vm.$t('events.common.interests'),"help":{show: true, message: _vm.$t('events.create.interetsHelp')}},model:{value:(_vm.instance.tags),callback:function ($$v) {_vm.instance.tags=$$v},expression:"instance.tags"}})],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column is-offset-one-quarter is-clearfix is-half"},[_c('button',{staticClass:"button is-primary ",attrs:{"type":"submit","name":"submit"}},[_vm._v(_vm._s(_vm.$t('common.save')))]),_vm._v(" "),_c('button',{staticClass:"button is-warning is-pulled-right",attrs:{"type":"button","name":"cancel"},on:{"click":_vm.cancel}},[_vm._v(_vm._s(_vm.$t('common.cancel')))])])])],1)])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -2054,7 +2520,8 @@ exports.default = {
       }
       return f;
     }
-  }
+  },
+  created: function created() {}
 };
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
@@ -2069,7 +2536,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-7ad16492", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-7ad16492", __vue__options__)
+    hotAPI.reload("data-v-7ad16492", __vue__options__)
   }
 })()}
 });
@@ -2296,7 +2763,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-0a3d0660", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-0a3d0660", __vue__options__)
+    hotAPI.reload("data-v-0a3d0660", __vue__options__)
   }
 })()}
 });
@@ -2342,7 +2809,124 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-6336f24a", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-6336f24a", __vue__options__)
+    hotAPI.reload("data-v-6336f24a", __vue__options__)
+  }
+})()}
+});
+
+;require.register("components/registrations/Create.vue", function(exports, require, module) {
+;(function(){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _fields = require('../common/forms/fields');
+
+var _fields2 = _interopRequireDefault(_fields);
+
+var _api = require('../../api');
+
+var _api2 = _interopRequireDefault(_api);
+
+var _vuex = require('vuex');
+
+var _countriesList = require('countries-list');
+
+var _countriesList2 = _interopRequireDefault(_countriesList);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  props: {
+    id: {
+      required: false,
+      type: String
+    }
+  },
+  components: {
+    'vb-field': _fields2.default.vbField
+  },
+  data: function data() {
+    return {
+      instance: {
+        eventId: '',
+        contactId: ''
+      }
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    if (this.id) {
+      _api2.default.registrations.get(this.id).then(function (result) {
+        _this.instance = result.data;
+      }).catch(function (error) {});
+    }
+  },
+
+  methods: _extends({}, (0, _vuex.mapActions)(['addMessage']), {
+    save: function save() {
+      var _this2 = this;
+
+      this.$validator.validateAll().then(function (success) {
+        if (_this2.instance._id) {
+          _this2.update();
+        } else {
+          _this2.create();
+        }
+      }).catch(function (error) {});
+    },
+    create: function create() {
+      var _this3 = this;
+
+      _api2.default.registrations.create(this.instance).then(function (result) {
+        _this3.addMessage({
+          text: 'Registration created successfully',
+          type: 'success'
+        });
+        _this3.$router.push({ name: 'admin.registrations' });
+      }).catch(function (error) {});
+    },
+    update: function update() {
+      var _this4 = this;
+
+      _api2.default.registrations.update(this.instance._id, this.instance).then(function (result) {
+        _this4.addMessage({
+          text: 'Registration updated successfully',
+          type: 'success'
+        });
+        _this4.$router.push({ name: 'admin.registrations' });
+      }).catch(function (error) {});
+    },
+    cancel: function cancel() {
+      this.$router.push({ name: 'admin.registrations' });
+    }
+  }),
+  computed: {
+    isUpdate: function isUpdate() {
+      return this.instance._id;
+    }
+  }
+
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"hero"},[_c('h1',{staticClass:"title is-2"},[_vm._v(_vm._s(_vm.$t('registrations.create.title' )))]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();$event.stopPropagation();_vm.save($event)}}},[_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.title'),"help":{show: _vm.errors.has('title'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.title),expression:"instance.title"},{name:"validate",rawName:"v-validate:event.initial",value:('required'),expression:"'required'",arg:"event",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('event')},attrs:{"type":"text","name":"title","placeholder":"Some event"},domProps:{"value":(_vm.instance.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.title=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.startDate'),"help":{show: _vm.errors.has('startDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.startDate),expression:"instance.startDate"},{name:"validate",rawName:"v-validate:startDate.initial",value:('required'),expression:"'required'",arg:"startDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('startDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"startDate"},domProps:{"value":(_vm.instance.startDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.startDate=$event.target.value}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.endDate'),"help":{show: _vm.errors.has('endDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.endDate),expression:"instance.endDate"},{name:"validate",rawName:"v-validate:endDate.initial",value:('required'),expression:"'required'",arg:"endDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('endDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"endDate"},domProps:{"value":(_vm.instance.endDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.endDate=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.description'),"help":{show: true, message: _vm.$t('events.create.descriptionHelp'), level: 'is-primary'}}},[_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.description),expression:"instance.description"}],staticClass:"textarea",attrs:{"type":"text","placeholder":"Snow","name":"description"},domProps:{"value":(_vm.instance.description)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.description=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column is-offset-one-quarter is-clearfix is-half"},[_c('button',{staticClass:"button is-primary ",attrs:{"type":"submit","name":"submit"}},[_vm._v(_vm._s(_vm.$t('common.save')))]),_vm._v(" "),_c('button',{staticClass:"button is-warning is-pulled-right",attrs:{"type":"button","name":"cancel"},on:{"click":_vm.cancel}},[_vm._v(_vm._s(_vm.$t('common.cancel')))])])])])])}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-dc9c6184", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-dc9c6184", __vue__options__)
   }
 })()}
 });
@@ -2692,9 +3276,9 @@ var _List = require('./List.vue');
 
 var _List2 = _interopRequireDefault(_List);
 
-var _Detail = require('./Detail.vue');
+var _Create = require('./Create.vue');
 
-var _Detail2 = _interopRequireDefault(_Detail);
+var _Create2 = _interopRequireDefault(_Create);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2712,9 +3296,16 @@ exports.default = [{
       loginRequired: true
     }
   }, {
+    name: 'admin.registrations.create',
+    path: 'create',
+    component: _Create2.default,
+    meta: {
+      loginRequired: true
+    }
+  }, {
     name: 'admin.registrations.detail',
     path: ':id',
-    component: _Detail2.default,
+    component: _Create2.default,
     props: true,
     meta: {
       loginRequired: true
@@ -3282,7 +3873,8 @@ var messages = {
       startDate: 'Start Date',
       endDate: 'End Date',
       createdAt: 'Created At',
-      updatedAt: 'UpdatedAt'
+      updatedAt: 'UpdatedAt',
+      interests: 'Interests'
     },
     list: {
       searchTitle: 'Search by Title'
@@ -3290,7 +3882,8 @@ var messages = {
     },
     create: {
       title: 'New Event',
-      descriptionHelp: 'This is the event\'s description. Accepts Markdown'
+      descriptionHelp: 'This is the event\'s description. Accepts Markdown',
+      interetsHelp: 'Enter a comma-separated list of available interests available for your event\'s registrants choice '
     }
 
   },
@@ -3367,6 +3960,10 @@ var _moment2 = _interopRequireDefault(_moment);
 var _countriesList = require('countries-list');
 
 var _countriesList2 = _interopRequireDefault(_countriesList);
+
+var _marked = require('marked');
+
+var _marked2 = _interopRequireDefault(_marked);
 
 var _vue = require('vue');
 

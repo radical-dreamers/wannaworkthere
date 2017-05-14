@@ -6,8 +6,8 @@
         <div class="column">
           <vb-field :label="$t('events.common.title')" :help="{show: errors.has('title'), message: $t('fields.requiredMessage'), level: 'is-danger'}">
             <input slot="field" class="input" type="text" v-model="instance.title"
-              name="title" placeholder="Some event" v-validate:event.initial="'required'"
-              :class="{'is-danger': errors.has('event')}"/>
+              name="title" placeholder="Some event" v-validate:title.initial="'required'"
+              :class="{'is-danger': errors.has('title')}"/>
           </vb-field>
         </div>
       </div>
@@ -25,14 +25,11 @@
           </vb-field>
         </div>
       </div>
+      <vb-markdown :label="$t('events.common.description')" :help="{show: true, message: $t('events.create.descriptionHelp'), level: 'is-primary'}" v-model="instance.description"></vb-markdown>
       <div class="columns">
         <div class="column">
-          <vb-field :label="$t('events.common.description')" :help="{show: true, message: $t('events.create.descriptionHelp'), level: 'is-primary'}">
-            <textarea slot="field" class="textarea" type="text" v-model="instance.description" placeholder="Snow"
-              name="description"/>
-          </vb-field>
+          <vb-tag-input :label="$t('events.common.interests')" :help="{show: true, message: $t('events.create.interetsHelp')}" v-model="instance.tags"></vb-tag-input>
         </div>
-
       </div>
       <div class="columns">
         <div class="column is-offset-one-quarter is-clearfix is-half" >
@@ -46,6 +43,7 @@
 </template>
 
 <script>
+import marked from 'marked'
 import fields from '../common/forms/fields'
 import api from '../../api'
 import { mapActions } from 'vuex'
@@ -59,7 +57,9 @@ export default {
     }
   },
   components: {
-    'vb-field': fields.vbField
+    'vb-field': fields.vbField,
+    'vb-markdown': fields.vbMarkdown,
+    'vb-tag-input': fields.vbTagInput
   },
   data () {
     return {
@@ -67,16 +67,18 @@ export default {
         title: '',
         description: '',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        tags: []
       }
     }
   },
   created () {
     if (this.id) {
       api.events.get(this.id).then((result)=> {
-        this.instance = result.data
+        Object.assign(this.instance, result.data)
       }).catch((error)=> { /* do nothing here*/})
     }
+
   },
   methods: {
     ...mapActions([

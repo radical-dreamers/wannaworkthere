@@ -51,7 +51,8 @@ const messages = {
       startDate: 'Start Date',
       endDate: 'End Date',
       createdAt: 'Created At',
-      updatedAt: 'UpdatedAt'
+      updatedAt: 'UpdatedAt',
+      interests: 'Interests'
     },
     list: {
       searchTitle: 'Search by Title',
@@ -59,7 +60,8 @@ const messages = {
     },
     create: {
       title: 'New Event',
-      descriptionHelp: 'This is the event\'s description. Accepts Markdown'
+      descriptionHelp: 'This is the event\'s description. Accepts Markdown',
+      interetsHelp: 'Enter a comma-separated list of available interests available for your event\'s registrants choice '
     }
 
   },

@@ -83,6 +83,9 @@ export default {
       }
       return f
     }
+  },
+  created () {
+
   }
 }
 </script>

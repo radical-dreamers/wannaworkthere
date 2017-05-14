@@ -1,5 +1,6 @@
 import moment from 'moment'
 import countriesList from 'countries-list'
+import marked from 'marked'
 
 import Vue from 'vue'
 import Router from 'vue-router'
