@@ -1,19 +1,12 @@
-import registrations from './registrations'
+//import registrations from './registrations'
 import interceptors from './interceptors'
-import api from '../config/api'
+import config from '../config'
+import feathers from 'feathers/client'
+import rest from 'feathers-rest/client'
+import axios from 'axios'
 
-/**
- * Setup interceptors
- */
-api.interceptors.request.use(interceptors.AuthInterceptor)
-api.interceptors.response.use(undefined, interceptors.NotAuthorizedInterceptor)
-api.interceptors.response.use(undefined, interceptors.ApiErrorInterceptor)
+const restClient = rest(config.api.url)
+const remoteApp = feathers()
+remoteApp.configure(restClient.axios(axios))
 
-/**
- * This module implements all api method connections we need
- */
-export default {
-  auth,
-  registrations,
-  users
-}
+export default remoteApp

@@ -5,14 +5,15 @@
  */
 import error from '../../components/error.vue'
 import hello from '../../components/Hello.vue'
+import Home from '../../components/home/Home.vue'
 import registrations from '../../components/registrations/routes'
 import about from '../../components/about/routes'
 
 let routes = [
   {
     path: '/home',
-    name: 'hello',
-    component: hello
+    name: 'home',
+    component: Home
   },
   ...registrations,
   ...about,

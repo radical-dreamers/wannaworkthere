@@ -2,8 +2,8 @@
   <nav class="nav has-shadow">
       <div class="container">
         <div class="nav-left">
-          <router-link class="nav-item title is-3" :to="{ name: 'hello' }">
-            ALTIMETRIK
+          <router-link class="nav-item title is-3" :to="{ name: 'home' }">
+            {{ appTitle }}
           </router-link>
         </div>
         <span class="nav-toggle"  @click="toggleMenu">
@@ -12,14 +12,14 @@
           <span></span>
         </span>
         <div class="nav-right nav-menu" v-bind:class="{ 'is-active': isOpen }" @click="toggleMenu">
-          <router-link class="nav-item is-tab" :to="{ name: 'hello' }">
+          <router-link class="nav-item is-tab" :to="{ name: 'home' }">
             Home
           </router-link>
           <router-link class="nav-item is-tab" :to="{name: 'registrationsNew'}">
-            Quiero Trabajar
+            Events
           </router-link>
           <router-link class="nav-item is-tab" :to="{name: 'about'}">
-            Altimetrik
+            About
           </router-link>
         </div>
       </div>
@@ -27,10 +27,13 @@
 </template>
 
 <script>
+import config from '../../config'
+
 export default {
   data () {
     return {
-        isOpen: false
+      appTitle: config.appTitle,
+      isOpen: false
     }
   },
   methods: {

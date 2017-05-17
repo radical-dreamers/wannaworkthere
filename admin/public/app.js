@@ -1509,7 +1509,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-18fef361", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-18fef361", __vue__options__)
+    hotAPI.reload("data-v-18fef361", __vue__options__)
   }
 })()}
 });
@@ -2323,6 +2323,10 @@ var _countriesList = require('countries-list');
 
 var _countriesList2 = _interopRequireDefault(_countriesList);
 
+var _models = require('../../models');
+
+var _models2 = _interopRequireDefault(_models);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -2339,13 +2343,7 @@ exports.default = {
   },
   data: function data() {
     return {
-      instance: {
-        title: '',
-        description: '',
-        startDate: '',
-        endDate: '',
-        tags: []
-      }
+      instance: new _models2.default.Event()
     };
   },
   created: function created() {
@@ -2402,7 +2400,7 @@ exports.default = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"hero"},[_c('h1',{staticClass:"title is-2"},[_vm._v(_vm._s(_vm.$t('events.create.title' )))]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();$event.stopPropagation();_vm.save($event)}}},[_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.title'),"help":{show: _vm.errors.has('title'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.title),expression:"instance.title"},{name:"validate",rawName:"v-validate:title.initial",value:('required'),expression:"'required'",arg:"title",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('title')},attrs:{"type":"text","name":"title","placeholder":"Some event"},domProps:{"value":(_vm.instance.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.title=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.startDate'),"help":{show: _vm.errors.has('startDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.startDate),expression:"instance.startDate"},{name:"validate",rawName:"v-validate:startDate.initial",value:('required'),expression:"'required'",arg:"startDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('startDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"startDate"},domProps:{"value":(_vm.instance.startDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.startDate=$event.target.value}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.endDate'),"help":{show: _vm.errors.has('endDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.endDate),expression:"instance.endDate"},{name:"validate",rawName:"v-validate:endDate.initial",value:('required'),expression:"'required'",arg:"endDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('endDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"endDate"},domProps:{"value":(_vm.instance.endDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.endDate=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('vb-markdown',{attrs:{"label":_vm.$t('events.common.description'),"help":{show: true, message: _vm.$t('events.create.descriptionHelp'), level: 'is-primary'}},model:{value:(_vm.instance.description),callback:function ($$v) {_vm.instance.description=$$v},expression:"instance.description"}}),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-tag-input',{attrs:{"label":_vm.$t('events.common.interests'),"help":{show: true, message: _vm.$t('events.create.interetsHelp')}},model:{value:(_vm.instance.tags),callback:function ($$v) {_vm.instance.tags=$$v},expression:"instance.tags"}})],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column is-offset-one-quarter is-clearfix is-half"},[_c('button',{staticClass:"button is-primary ",attrs:{"type":"submit","name":"submit"}},[_vm._v(_vm._s(_vm.$t('common.save')))]),_vm._v(" "),_c('button',{staticClass:"button is-warning is-pulled-right",attrs:{"type":"button","name":"cancel"},on:{"click":_vm.cancel}},[_vm._v(_vm._s(_vm.$t('common.cancel')))])])])],1)])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"hero"},[_c('h1',{staticClass:"title is-2"},[_vm._v(_vm._s(_vm.$t('events.create.title' )))]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();$event.stopPropagation();_vm.save($event)}}},[_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.title'),"help":{show: _vm.errors.has('title'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.title),expression:"instance.title"},{name:"validate",rawName:"v-validate:title.initial",value:('required'),expression:"'required'",arg:"title",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('title')},attrs:{"type":"text","name":"title","placeholder":"Some event"},domProps:{"value":(_vm.instance.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.title=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('vb-markdown',{attrs:{"label":_vm.$t('events.common.description'),"help":{show: true, message: _vm.$t('events.create.descriptionHelp'), level: 'is-primary'}},model:{value:(_vm.instance.description),callback:function ($$v) {_vm.instance.description=$$v},expression:"instance.description"}}),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.startDate'),"help":{show: _vm.errors.has('startDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.startDate),expression:"instance.startDate"},{name:"validate",rawName:"v-validate:startDate.initial",value:('required'),expression:"'required'",arg:"startDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('startDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"startDate"},domProps:{"value":(_vm.instance.startDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.startDate=$event.target.value}},slot:"field"})]),_vm._v(" "),_c('vb-field',{attrs:{"label":"Available Seats","help":{show: true, message: 'Amount of available seats in your event. Leave empty for unlimited seats'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.availaleSeats),expression:"instance.availaleSeats"}],staticClass:"input",attrs:{"type":"number","name":"availableSeats"},domProps:{"value":(_vm.instance.availaleSeats)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.availaleSeats=$event.target.value},"blur":function($event){_vm.$forceUpdate()}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.endDate'),"help":{show: _vm.errors.has('endDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.endDate),expression:"instance.endDate"},{name:"validate",rawName:"v-validate:endDate.initial",value:('required'),expression:"'required'",arg:"endDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('endDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"endDate"},domProps:{"value":(_vm.instance.endDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.endDate=$event.target.value}},slot:"field"})]),_vm._v(" "),_c('vb-tag-input',{attrs:{"label":_vm.$t('events.common.interests'),"help":{show: true, message: _vm.$t('events.create.interetsHelp')}},model:{value:(_vm.instance.tags),callback:function ($$v) {_vm.instance.tags=$$v},expression:"instance.tags"}})],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column is-offset-one-quarter is-clearfix is-half"},[_c('button',{staticClass:"button is-primary ",attrs:{"type":"submit","name":"submit"}},[_vm._v(_vm._s(_vm.$t('common.save')))]),_vm._v(" "),_c('button',{staticClass:"button is-warning is-pulled-right",attrs:{"type":"button","name":"cancel"},on:{"click":_vm.cancel}},[_vm._v(_vm._s(_vm.$t('common.cancel')))])])])],1)])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -4045,6 +4043,104 @@ var app = new _vue2.default({
 app.$mount('#app');
 
 window.app = app;
+
+});
+
+require.register("models/base-model.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var BaseModel = function BaseModel() {
+  _classCallCheck(this, BaseModel);
+
+  this._id = null;
+  this.createdAt = null;
+  this.updatedAt = null;
+};
+
+exports.default = BaseModel;
+
+});
+
+require.register("models/event.js", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _baseModel = require('./base-model');
+
+var _baseModel2 = _interopRequireDefault(_baseModel);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Event = function (_BaseModel) {
+  _inherits(Event, _BaseModel);
+
+  _createClass(Event, null, [{
+    key: 'statusOptions',
+    get: function get() {
+      return {
+        DRAFT: 'Draft',
+        REVIEW: 'In Review',
+        PUBLISHED: 'Published'
+      };
+    }
+  }]);
+
+  function Event() {
+    _classCallCheck(this, Event);
+
+    var _this = _possibleConstructorReturn(this, (Event.__proto__ || Object.getPrototypeOf(Event)).call(this));
+
+    _this.title = null;
+    _this.description = null;
+    _this.startDate = null;
+    _this.endDate = null;
+    _this.tags = [];
+    _this.topics = [];
+    _this.status = Event.statusOptions.DRAFT;
+    _this.availableSeats = -1;
+    return _this;
+  }
+
+  return Event;
+}(_baseModel2.default);
+
+exports.default = Event;
+
+});
+
+require.register("models/index.js", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _event = require('./event');
+
+var _event2 = _interopRequireDefault(_event);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  Event: _event2.default
+};
 
 });
 

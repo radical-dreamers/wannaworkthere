@@ -4,5 +4,5 @@ import routes from './routes'
 export default {
   api: api,
   routes: routes,
-  appTitle: 'Quiero trabajar en Altimetrik'
+  appTitle: 'Events'
 }

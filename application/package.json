@@ -42,6 +42,8 @@
     "animate.css": "^3.5.2",
     "axios": "^0.15.3",
     "bulma": "^0.3.2",
+    "feathers": "^2.1.2",
+    "feathers-rest": "^1.7.2",
     "font-awesome": "^4.7.0",
     "izitoast": "^1.1.1",
     "moment": "^2.17.1",
