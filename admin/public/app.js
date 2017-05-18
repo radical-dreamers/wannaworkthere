@@ -1078,7 +1078,105 @@ exports.default = {
 
 });
 
-require.register("components/common/forms/fields/index.js", function(exports, require, module) {
+require.register("components/common/forms/buttons/index.js", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _vbSelectButton = require('./vb-select-button.vue');
+
+var _vbSelectButton2 = _interopRequireDefault(_vbSelectButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  vbSelectButton: _vbSelectButton2.default
+};
+
+});
+
+require.register("components/common/forms/buttons/vb-select-button.vue", function(exports, require, module) {
+;(function(){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  data: function data() {
+    return {
+      open: false
+    };
+  },
+
+  props: {
+    value: {
+      required: false
+    },
+
+    options: {
+      type: Array,
+      required: true
+    }
+  },
+  methods: {
+    toggleOptions: function toggleOptions() {
+      this.open = !this.open;
+    },
+    selectOption: function selectOption(option) {
+      var oldSelected = this.selected;
+
+      if (oldSelected !== option) {
+        oldSelected.selected = false;
+
+        option.selected = true;
+
+        this.$emit('input', option.value);
+
+        this.$emit('change', { old: oldSelected.value, new: option.value });
+        this.selected = option;
+      }
+
+      if (this.open) {
+        this.toggleOptions();
+      }
+    },
+    emitClick: function emitClick() {
+      this.$emit('click', this);
+    }
+  },
+  computed: {
+    selected: function selected() {
+      var vm = this;
+      return this.options.find(function (x) {
+        return x.value === vm.value;
+      }) || this.options.find(function (x) {
+        return x.selected;
+      });
+    }
+  }
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"field has-addons"},[_c('p',{staticClass:"control"},[_c('a',{staticClass:"button",on:{"click":function($event){$event.stopPropagation();$event.preventDefault();_vm.emitClick($event)}}},[_c('span',[_vm._v(_vm._s(_vm.selected.label))])])]),_vm._v(" "),_c('p',{staticClass:"control"},[_c('a',{staticClass:"button"},[_c('span',{staticClass:"icon",on:{"click":_vm.toggleOptions}},[_c('i',{staticClass:"fa ",class:{'fa-angle-down': !_vm.open, 'fa-angle-up': _vm.open}})])])])]),_vm._v(" "),_c('div',{staticStyle:{"position":"relative"}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.open),expression:"open"}],staticClass:"menu"},[_c('ul',{staticClass:"menu-list"},_vm._l((_vm.options),function(option,index){return _c('li',[_c('a',{staticClass:"panel-block is-solid",class:{'is-active': option.value === _vm.selected.value },on:{"click":function($event){$event.stopPropagation();$event.preventDefault();_vm.selectOption(option)}}},[_vm._v("\n          "+_vm._s(option.label)+"\n        ")])])}))])])])}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-afa2add2", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-afa2add2", __vue__options__)
+  }
+})()}
+});
+
+;require.register("components/common/forms/fields/index.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1500,7 +1598,7 @@ exports.default = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.label,"help":_vm.help}},[_c('textarea',{staticClass:"textarea",attrs:{"type":"text","name":"description"},domProps:{"value":_vm.value},on:{"keyup":function($event){_vm.handleInput($event.target.value)}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('div',{staticClass:"card"},[_c('div',{staticClass:"card-content",domProps:{"innerHTML":_vm._s(_vm.mdText)}})])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.label,"help":_vm.help}},[_c('textarea',{staticClass:"textarea",attrs:{"type":"text","name":"description"},domProps:{"value":_vm.value},on:{"keyup":function($event){_vm.handleInput($event.target.value)}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('div',{staticClass:"card"},[_c('div',{staticClass:"card-content content",domProps:{"innerHTML":_vm._s(_vm.mdText)}})])])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -2313,6 +2411,10 @@ var _fields = require('../common/forms/fields');
 
 var _fields2 = _interopRequireDefault(_fields);
 
+var _buttons = require('../common/forms/buttons');
+
+var _buttons2 = _interopRequireDefault(_buttons);
+
 var _api = require('../../api');
 
 var _api2 = _interopRequireDefault(_api);
@@ -2339,11 +2441,23 @@ exports.default = {
   components: {
     'vb-field': _fields2.default.vbField,
     'vb-markdown': _fields2.default.vbMarkdown,
-    'vb-tag-input': _fields2.default.vbTagInput
+    'vb-tag-input': _fields2.default.vbTagInput,
+    'vb-select-button': _buttons2.default.vbSelectButton
   },
   data: function data() {
     return {
-      instance: new _models2.default.Event()
+      instance: new _models2.default.Event(),
+      publishingOptions: [{
+        label: 'Save as Draft',
+        value: _models2.default.Event.statusOptions.DRAFT,
+        selected: true
+      }, {
+        label: 'Send for Review',
+        value: _models2.default.Event.statusOptions.REVIEW
+      }, {
+        label: 'Publish Now',
+        value: _models2.default.Event.statusOptions.PUBLISHED
+      }]
     };
   },
   created: function created() {
@@ -2352,6 +2466,7 @@ exports.default = {
     if (this.id) {
       _api2.default.events.get(this.id).then(function (result) {
         Object.assign(_this.instance, result.data);
+        console.log(_this.instance);
       }).catch(function (error) {});
     }
   },
@@ -2392,6 +2507,19 @@ exports.default = {
     },
     cancel: function cancel() {
       this.$router.push({ name: 'admin.events' });
+    },
+    actionSelect: function actionSelect(target) {
+      var vm = this;
+      switch (target.value) {
+        case _models2.default.Event.statusOptions.DRAFT:
+        case _models2.default.Event.statusOptions.PUBLISHED:
+        case _models2.default.Event.statusOptions.REVIEW:
+          vm.save();
+          break;
+        default:
+          vm.cancel();
+          break;
+      }
     }
   })
 
@@ -2400,7 +2528,7 @@ exports.default = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"hero"},[_c('h1',{staticClass:"title is-2"},[_vm._v(_vm._s(_vm.$t('events.create.title' )))]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();$event.stopPropagation();_vm.save($event)}}},[_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.title'),"help":{show: _vm.errors.has('title'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.title),expression:"instance.title"},{name:"validate",rawName:"v-validate:title.initial",value:('required'),expression:"'required'",arg:"title",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('title')},attrs:{"type":"text","name":"title","placeholder":"Some event"},domProps:{"value":(_vm.instance.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.title=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('vb-markdown',{attrs:{"label":_vm.$t('events.common.description'),"help":{show: true, message: _vm.$t('events.create.descriptionHelp'), level: 'is-primary'}},model:{value:(_vm.instance.description),callback:function ($$v) {_vm.instance.description=$$v},expression:"instance.description"}}),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.startDate'),"help":{show: _vm.errors.has('startDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.startDate),expression:"instance.startDate"},{name:"validate",rawName:"v-validate:startDate.initial",value:('required'),expression:"'required'",arg:"startDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('startDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"startDate"},domProps:{"value":(_vm.instance.startDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.startDate=$event.target.value}},slot:"field"})]),_vm._v(" "),_c('vb-field',{attrs:{"label":"Available Seats","help":{show: true, message: 'Amount of available seats in your event. Leave empty for unlimited seats'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.availaleSeats),expression:"instance.availaleSeats"}],staticClass:"input",attrs:{"type":"number","name":"availableSeats"},domProps:{"value":(_vm.instance.availaleSeats)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.availaleSeats=$event.target.value},"blur":function($event){_vm.$forceUpdate()}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.endDate'),"help":{show: _vm.errors.has('endDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.endDate),expression:"instance.endDate"},{name:"validate",rawName:"v-validate:endDate.initial",value:('required'),expression:"'required'",arg:"endDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('endDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"endDate"},domProps:{"value":(_vm.instance.endDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.endDate=$event.target.value}},slot:"field"})]),_vm._v(" "),_c('vb-tag-input',{attrs:{"label":_vm.$t('events.common.interests'),"help":{show: true, message: _vm.$t('events.create.interetsHelp')}},model:{value:(_vm.instance.tags),callback:function ($$v) {_vm.instance.tags=$$v},expression:"instance.tags"}})],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column is-offset-one-quarter is-clearfix is-half"},[_c('button',{staticClass:"button is-primary ",attrs:{"type":"submit","name":"submit"}},[_vm._v(_vm._s(_vm.$t('common.save')))]),_vm._v(" "),_c('button',{staticClass:"button is-warning is-pulled-right",attrs:{"type":"button","name":"cancel"},on:{"click":_vm.cancel}},[_vm._v(_vm._s(_vm.$t('common.cancel')))])])])],1)])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"hero"},[_c('h1',{staticClass:"title is-2"},[_vm._v(_vm._s(_vm.$t('events.create.title' )))]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();$event.stopPropagation();_vm.save($event)}}},[_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.title'),"help":{show: _vm.errors.has('title'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.title),expression:"instance.title"},{name:"validate",rawName:"v-validate:title.initial",value:('required'),expression:"'required'",arg:"title",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('title')},attrs:{"type":"text","name":"title","placeholder":"Some event"},domProps:{"value":(_vm.instance.title)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.title=$event.target.value}},slot:"field"})])],1)]),_vm._v(" "),_c('vb-markdown',{attrs:{"label":_vm.$t('events.common.description'),"help":{show: true, message: _vm.$t('events.create.descriptionHelp'), level: 'is-primary'}},model:{value:(_vm.instance.description),callback:function ($$v) {_vm.instance.description=$$v},expression:"instance.description"}}),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.startDate'),"help":{show: _vm.errors.has('startDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.startDate),expression:"instance.startDate"},{name:"validate",rawName:"v-validate:startDate.initial",value:('required'),expression:"'required'",arg:"startDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('startDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"startDate"},domProps:{"value":(_vm.instance.startDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.startDate=$event.target.value}},slot:"field"})]),_vm._v(" "),_c('vb-field',{attrs:{"label":"Available Seats","help":{show: true, message: 'Amount of available seats in your event. Leave empty for unlimited seats'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.availaleSeats),expression:"instance.availaleSeats"}],staticClass:"input",attrs:{"type":"number","name":"availableSeats"},domProps:{"value":(_vm.instance.availaleSeats)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.availaleSeats=$event.target.value},"blur":function($event){_vm.$forceUpdate()}},slot:"field"})])],1),_vm._v(" "),_c('div',{staticClass:"column"},[_c('vb-field',{attrs:{"label":_vm.$t('events.common.endDate'),"help":{show: _vm.errors.has('endDate'), message: _vm.$t('fields.requiredMessage'), level: 'is-danger'}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.instance.endDate),expression:"instance.endDate"},{name:"validate",rawName:"v-validate:endDate.initial",value:('required'),expression:"'required'",arg:"endDate",modifiers:{"initial":true}}],staticClass:"input",class:{'is-danger': _vm.errors.has('endDate')},attrs:{"type":"text","placeholder":"27/1/2017","name":"endDate"},domProps:{"value":(_vm.instance.endDate)},on:{"input":function($event){if($event.target.composing){ return; }_vm.instance.endDate=$event.target.value}},slot:"field"})]),_vm._v(" "),_c('vb-tag-input',{attrs:{"label":_vm.$t('events.common.interests'),"help":{show: true, message: _vm.$t('events.create.interetsHelp')}},model:{value:(_vm.instance.tags),callback:function ($$v) {_vm.instance.tags=$$v},expression:"instance.tags"}})],1)]),_vm._v(" "),_c('div',{staticClass:"columns"},[_c('div',{staticClass:"column is-offset-one-quarter is-clearfix is-half"},[_c('vb-select-button',{staticClass:"is-pulled-left",attrs:{"options":_vm.publishingOptions},on:{"click":_vm.actionSelect},model:{value:(_vm.instance.status),callback:function ($$v) {_vm.instance.status=$$v},expression:"instance.status"}}),_vm._v(" "),_c('button',{staticClass:"button is-warning is-pulled-right",attrs:{"type":"button","name":"cancel"},on:{"click":_vm.cancel}},[_vm._v(_vm._s(_vm.$t('common.cancel')))])],1)])],1)])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -2409,7 +2537,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-166afa56", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-166afa56", __vue__options__)
+    hotAPI.reload("data-v-166afa56", __vue__options__)
   }
 })()}
 });
@@ -4107,10 +4235,10 @@ var Event = function (_BaseModel) {
 
     var _this = _possibleConstructorReturn(this, (Event.__proto__ || Object.getPrototypeOf(Event)).call(this));
 
-    _this.title = null;
-    _this.description = null;
-    _this.startDate = null;
-    _this.endDate = null;
+    _this.title = '';
+    _this.description = '';
+    _this.startDate = '';
+    _this.endDate = '';
     _this.tags = [];
     _this.topics = [];
     _this.status = Event.statusOptions.DRAFT;

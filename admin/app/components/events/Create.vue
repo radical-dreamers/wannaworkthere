@@ -21,6 +21,7 @@
           <vb-field label="Available Seats" :help="{show: true, message: 'Amount of available seats in your event. Leave empty for unlimited seats'}" >
             <input slot="field" class="input" type="number" v-model="instance.availaleSeats" name="availableSeats" />
           </vb-field>
+          
         </div>
         <div class="column">
           <vb-field :label="$t('events.common.endDate')" :help="{show: errors.has('endDate'), message: $t('fields.requiredMessage'), level: 'is-danger'}">
@@ -30,9 +31,10 @@
           <vb-tag-input :label="$t('events.common.interests')" :help="{show: true, message: $t('events.create.interetsHelp')}" v-model="instance.tags"></vb-tag-input>
         </div>
       </div>
+      
       <div class="columns">
         <div class="column is-offset-one-quarter is-clearfix is-half" >
-          <button type="submit" name="submit" class="button is-primary ">{{ $t('common.save') }}</button>
+          <vb-select-button class="is-pulled-left" :options="publishingOptions" v-model="instance.status" @click="actionSelect"></vb-select-button>
           <button type="button" name="cancel" class="button is-warning is-pulled-right" @click="cancel">{{ $t('common.cancel') }}</button>
         </div>
       </div>
@@ -44,6 +46,7 @@
 <script>
 import marked from 'marked'
 import fields from '../common/forms/fields'
+import buttons from '../common/forms/buttons'
 import api from '../../api'
 import { mapActions } from 'vuex'
 import countriesList from 'countries-list'
@@ -59,17 +62,34 @@ export default {
   components: {
     'vb-field': fields.vbField,
     'vb-markdown': fields.vbMarkdown,
-    'vb-tag-input': fields.vbTagInput
+    'vb-tag-input': fields.vbTagInput,
+    'vb-select-button': buttons.vbSelectButton
   },
   data () {
     return {
-      instance: new models.Event()
+      instance: new models.Event(),
+      publishingOptions: [
+        {
+          label: 'Save as Draft',
+          value: models.Event.statusOptions.DRAFT,
+          selected: true
+        },
+        {
+          label: 'Send for Review',
+          value: models.Event.statusOptions.REVIEW
+        },
+        {
+          label: 'Publish Now',
+          value: models.Event.statusOptions.PUBLISHED
+        }
+      ]
     }
   },
   created () {
     if (this.id) {
       api.events.get(this.id).then((result)=> {
         Object.assign(this.instance, result.data)
+        console.log(this.instance)
       }).catch((error)=> { /* do nothing here*/})
     }
 
@@ -107,6 +127,19 @@ export default {
     },
     cancel () {
       this.$router.push({name: 'admin.events'})
+    },
+    actionSelect (target) {
+      let vm = this
+      switch (target.value) {
+        case models.Event.statusOptions.DRAFT:
+        case models.Event.statusOptions.PUBLISHED:
+        case models.Event.statusOptions.REVIEW:
+          vm.save()
+          break
+        default:
+          vm.cancel()
+          break
+      }
     }
   }
 

@@ -8,7 +8,7 @@
     </div>
     <div class="column" >
       <div class="card" >
-        <div class="card-content" v-html="mdText">
+        <div class="card-content content" v-html="mdText">
 
         </div>
       </div>

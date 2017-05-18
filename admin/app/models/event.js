@@ -12,10 +12,10 @@ class Event extends BaseModel {
 
   constructor() {
     super()
-    this.title = null
-    this.description = null
-    this.startDate = null
-    this.endDate = null
+    this.title = ''
+    this.description = ''
+    this.startDate = ''
+    this.endDate = ''
     this.tags = []
     this.topics = []
     this.status = Event.statusOptions.DRAFT
